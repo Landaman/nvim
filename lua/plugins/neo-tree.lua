@@ -61,6 +61,8 @@ return {
         hide_by_name = {
           '.git',
           'node_modules',
+          '.venv',
+          '__pycache__',
         },
       },
       follow_current_file = {

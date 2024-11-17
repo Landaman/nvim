@@ -55,10 +55,10 @@ return {
             swap = {
               enable = true,
               swap_previous = {
-                ['<leader>A'] = { query = '@parameter.inner', desc = 'LSP: Swap with previous p[A]rameter' },
+                ['[p'] = { query = '@parameter.inner', desc = 'LSP: Swap with previous [p]arameter' },
               },
               swap_next = {
-                ['<leader>a'] = { query = '@parameter.inner', desc = 'LSP: Swap with next p[a]rameter' },
+                [']p'] = { query = '@parameter.inner', desc = 'LSP: Swap with next [p]arameter' },
               },
             },
             lsp_interop = {

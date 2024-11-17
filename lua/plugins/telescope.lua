@@ -155,6 +155,8 @@ return {
           '^.git/',
           '^.venv/',
           '/.venv/',
+          '^__pycache__/',
+          '/__pycache__/',
         },
         mappings = {
           n = {
