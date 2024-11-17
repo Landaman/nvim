@@ -1,6 +1,7 @@
 return {
   { -- Autocompletion
-    'hrsh7th/nvim-cmp',
+    'iguanacucumber/magazine.nvim',
+    name = 'nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
@@ -32,8 +33,9 @@ return {
       -- Adds other completion capabilities.
       --  nvim-cmp does not ship with all sources by default. They are split
       --  into multiple repos for maintenance purposes.
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
+      { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp', opts = {} },
+      'https://codeberg.org/FelipeLema/cmp-async-path',
+      { 'iguanacucumber/mag-buffer', name = 'cmp-buffer' },
       'luckasRanarison/tailwind-tools.nvim',
       'onsails/lspkind-nvim',
     },
@@ -127,7 +129,8 @@ return {
           },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
-          { name = 'path' },
+          { name = 'async_path' },
+          { name = 'buffer' },
         },
       }
     end,
