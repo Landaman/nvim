@@ -289,6 +289,11 @@ return {
 
         if config.type ~= 'scala' then
           result.configurations[index] = config
+
+          -- Without this, nothing works :(
+          if (config.type == 'pwa-chrome' or config.type == 'chrome') and result.configurations[index].webRoot == nil then
+            result.configurations[index].webRoot = vim.fn.getcwd()
+          end
         else
           scala_config = {}
           scala_config['metals'] = {}
