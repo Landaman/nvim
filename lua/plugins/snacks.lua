@@ -27,21 +27,5 @@ return {
       end,
       desc = 'Dismiss [n]otifications',
     },
-    {
-      ']]',
-      function()
-        Snacks.words.jump(vim.v.count1)
-      end,
-      desc = 'Next reference',
-      mode = { 'n', 't' },
-    },
-    {
-      '[[',
-      function()
-        Snacks.words.jump(-vim.v.count1)
-      end,
-      desc = 'Prev reference',
-      mode = { 'n', 't' },
-    },
   },
 }

@@ -128,7 +128,7 @@ return {
       { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
-      'hrsh7th/cmp-nvim-lsp',
+      'cmp-nvim-lsp',
 
       -- Use telescope for extra actions, etc
       'nvim-telescope/telescope.nvim',
@@ -223,6 +223,15 @@ return {
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, 'Toggle Inlay [h]ints')
+          end
+
+          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+            map(']]', function()
+              Snacks.words.jump(vim.v.count1)
+            end, 'Next reference', { 'n', 't' })
+            map('[[', function()
+              Snacks.words.jump(-vim.v.count1)
+            end, 'Previous reference', { 'n', 't' })
           end
         end,
       })
