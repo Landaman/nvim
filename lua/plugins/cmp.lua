@@ -3,7 +3,6 @@ return {
     'iguanacucumber/magazine.nvim',
     name = 'nvim-cmp',
     event = 'InsertEnter',
-    version = '0.3',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       {
