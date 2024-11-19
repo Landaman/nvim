@@ -59,11 +59,18 @@ return {
         null_ls.builtins.diagnostics.markdownlint,
         cspell.diagnostics.with {
           -- info rather than errors
+          disabled_filetypes = { 'bigfile' },
           diagnostics_postprocess = function(diagnostic)
             diagnostic.severity = vim.diagnostic.severity.INFO
           end,
         },
-        cspell.code_actions,
+        cspell.code_actions.with {
+          -- info rather than errors
+          disabled_filetypes = { 'bigfile' },
+          diagnostics_postprocess = function(diagnostic)
+            diagnostic.severity = vim.diagnostic.severity.INFO
+          end,
+        },
       },
     }
   end,
