@@ -25,7 +25,7 @@ return {
         globalstatus = vim.o.laststatus == 3,
         icons_enabled = true,
         disabled_filetypes = {
-          statusline = { 'dashboard' },
+          statusline = { 'snacks_dashboard' },
         },
       },
       sections = {
