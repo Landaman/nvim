@@ -58,11 +58,19 @@ return {
         hide_dotfiles = false,
         hide_gitignored = true,
         hide_hidden = false,
-        hide_by_name = {
-          '.git',
-          'node_modules',
-          '.venv',
-          '__pycache__',
+        hide_by_pattern = {
+          '**/.git',
+          '**/node_modules',
+          '**/.venv',
+          '**/__pycache__',
+          '**/.metals',
+          '**/.bloop',
+          '**/.ammonite',
+          '**/metals.sbt',
+        },
+        never_show_by_pattern = {
+          '**/.git',
+          '**/.DS_Store',
         },
       },
       follow_current_file = {

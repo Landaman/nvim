@@ -157,6 +157,14 @@ return {
           '/.venv/',
           '^__pycache__/',
           '/__pycache__/',
+          '/.metals/',
+          '/.bloop/',
+          '/.ammonite/',
+          '/metals.sbt',
+          '^.metals/',
+          '^.bloop/',
+          '^.ammonite/',
+          '^metals.sbt',
         },
         mappings = {
           n = {
