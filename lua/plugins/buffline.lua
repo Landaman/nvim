@@ -21,7 +21,9 @@ return {
         local s = ''
         for e, n in pairs(diag) do
           local sym = e == 'error' and vim.g.diagnostic_signs[vim.diagnostic.severity.ERROR]
-            or (e == 'warning' and vim.g.diagnostic_signs[vim.diagnostic.severity.WARN] or vim.g.diagnostic_signs[vim.diagnostic.severity.INFO])
+            or (e == 'warning' and vim.g.diagnostic_signs[vim.diagnostic.severity.WARN])
+            or e == 'info' and vim.g.diagnostic_signs[vim.diagnostic.severity.INFO]
+            or vim.g.diagnostic_signs[vim.diagnostic.severity.HINT]
           s = s .. ' ' .. sym .. n
           return s
         end
