@@ -112,6 +112,29 @@ return {
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
       },
     },
+    dependencies = {
+      {
+        'saghen/blink.cmp',
+        opts = {
+          sources = {
+            completion = {
+              -- add lazydev to your completion providers
+              enabled_providers = { 'lazydev' },
+            },
+            providers = {
+              lsp = {
+                -- dont show LuaLS require statements when lazydev has items
+                fallback_for = { 'lazydev' },
+              },
+              lazydev = {
+                name = 'LazyDev',
+                module = 'lazydev.integrations.blink',
+              },
+            },
+          },
+        },
+      },
+    },
   },
   { 'Bilal2453/luvit-meta', lazy = true },
   {
@@ -128,7 +151,7 @@ return {
       { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
-      'cmp-nvim-lsp',
+      'saghen/blink.cmp',
 
       -- Use telescope for extra actions, etc
       'nvim-telescope/telescope.nvim',
@@ -213,8 +236,8 @@ return {
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, 'Goto [D]eclaration')
 
-          -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
+
           -- The following code creates a keymap to toggle inlay hints in your
           -- code, if the language server you are using supports them
           --
@@ -225,6 +248,7 @@ return {
             end, 'Toggle Inlay [h]ints')
           end
 
+          -- Enable jumping by hover reference
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             map(']]', function()
               Snacks.words.jump(vim.v.count1)
@@ -235,13 +259,6 @@ return {
           end
         end,
       })
-
-      -- LSP servers and clients are able to communicate to each other what features they support.
-      --  By default, Neovim doesn't support everything that is in the LSP specification.
-      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-      --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
@@ -254,10 +271,7 @@ return {
             if servers[server_name] ~= nil then
               local server = servers[server_name] or {}
 
-              -- This handles overriding only values explicitly passed
-              -- by the server configuration above. Useful when disabling
-              -- certain features of an LSP (for example, turning off formatting for tsserver)
-              server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+              server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
               require('lspconfig')[server_name].setup(server)
             end
           end,

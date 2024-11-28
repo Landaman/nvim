@@ -105,7 +105,7 @@ vim.g.close_buffer = function(buf)
   Snacks.bufdelete(buf)
 end
 
-vim.loader.enable()
+vim.loader.enable() -- Enable the faster plugin loader
 
 -- [[ Setting options ]]
 require 'options'

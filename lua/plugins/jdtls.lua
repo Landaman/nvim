@@ -97,7 +97,7 @@ return {
         root_dir = opts.root_dir(fname),
         cmd = opts.full_cmd(opts),
         settings = opts.settings,
-        capabilities = require('cmp_nvim_lsp').default_capabilities(),
+        capabilities = require('blink.cmp').get_lsp_capabilities(),
         init_options = {
           bundles = bundles,
         },

@@ -11,6 +11,6 @@ return {
     },
   },
   opts = {
-    snippet_engine = 'luasnip',
+    snippet_engine = 'nvim',
   },
 }

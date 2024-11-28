@@ -2,7 +2,7 @@ return {
   {
     'williamboman/mason.nvim',
     cmd = 'Mason',
-    build = 'MasonUpdate',
+    build = ':MasonUpdate',
     opts = {}, -- This is required to ensure setup actually happens
   },
   {

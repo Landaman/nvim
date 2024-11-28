@@ -49,4 +49,11 @@ return {
       desc = 'Dismiss [n]otifications',
     },
   },
+  config = function(_, opts)
+    local notify = vim.notify
+    require('snacks').setup(opts)
+    -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
+    -- this is needed to have early notifications show up in noice history
+    vim.notify = notify
+  end,
 }

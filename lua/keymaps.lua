@@ -28,22 +28,39 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- Show signature help in insert mode
-vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { desc = 'Show signature help' })
-
+-- Buffer read/close commands
 vim.keymap.set('n', '<leader>fd', function()
-  vim.g.close_buffer()
+  vim.g.close_buffer() -- Smart close buffer based on window
 end, { desc = '[d] Close current buffer' })
 vim.keymap.set('n', '<leader>fD', function()
-  vim.cmd 'bdelete'
+  vim.cmd 'bdelete' -- Close buffer and window
 end, { desc = '[D] Close current buffer and window' })
 
 vim.keymap.set('n', '<leader>fw', function()
   vim.cmd 'w'
 end, { desc = '[w]rite current buffer' })
 
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
+-- Snippet navigation
+vim.keymap.set({ 'i', 's' }, '<C-l>', function()
+  if vim.snippet.active { direction = 1 } then
+    vim.schedule(function()
+      vim.snippet.jump(1)
+    end)
+    return
+  end
+end, {
+  desc = 'Snippet: Jump forward',
+})
+vim.keymap.set({ 'i', 's' }, '<C-h>', function()
+  if vim.snippet.active { direction = -1 } then
+    vim.schedule(function()
+      vim.snippet.jump(-1)
+    end)
+    return
+  end
+end, {
+  desc = 'Snippet: Jump backward',
+})
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode

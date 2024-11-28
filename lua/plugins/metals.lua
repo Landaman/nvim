@@ -10,9 +10,9 @@ return {
     local metals_config = require('metals').bare_config()
     metals_config.init_options.statusBarProvider = 'off' -- Statusbar is annoying
 
-    metals_config.capabilities = require('cmp_nvim_lsp').default_capabilities() -- Disable capabilities
+    metals_config.capabilities = require('blink.cmp').get_lsp_capabilities() -- Enable capabilities
 
-    metals_config.on_attach = function(client, bufnr)
+    metals_config.on_attach = function(_, _)
       require('metals').setup_dap()
     end
 
