@@ -72,6 +72,9 @@ return {
           '**/.git',
           '**/.DS_Store',
         },
+        always_show_by_pattern = {
+          '**/.env*',
+        },
       },
       follow_current_file = {
         enabled = true,
