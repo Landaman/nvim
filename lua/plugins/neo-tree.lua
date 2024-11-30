@@ -6,18 +6,19 @@ return {
   version = '*',
   dependencies = {
     'nvim-lua/plenary.nvim',
-    'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+    'nvim-tree/nvim-web-devicons',
     'MunifTanjim/nui.nvim',
   },
   cmd = 'Neotree',
   init = function()
+    -- This allows Neotree to override NETRW on startup
     vim.api.nvim_create_autocmd('BufNewFile', {
-      group = vim.api.nvim_create_augroup('RemoteFile', { clear = true }),
+      group = vim.api.nvim_create_augroup('RemoteFile', { clear = true }), -- Remote environments
       callback = function()
         local f = vim.fn.expand '%:p'
         for _, v in ipairs { 'sftp', 'scp', 'ssh', 'dav', 'fetch', 'ftp', 'http', 'rcp', 'rsync' } do
           local p = v .. '://'
-          if string.sub(f, 1, #p) == p then
+          if string.sub(f, 1, #p) == p then -- Allow NETRW to load
             vim.cmd [[
           unlet g:loaded_netrw
           unlet g:loaded_netrwPlugin
@@ -31,7 +32,7 @@ return {
       end,
     })
     vim.api.nvim_create_autocmd('BufEnter', {
-      group = vim.api.nvim_create_augroup('NeoTreeInit', { clear = true }),
+      group = vim.api.nvim_create_augroup('NeoTreeInit', { clear = true }), -- Initialize NeoTree
       callback = function()
         local f = vim.fn.expand '%:p'
         if vim.fn.isdirectory(f) ~= 0 then
@@ -73,6 +74,7 @@ return {
           '**/.DS_Store',
         },
         always_show_by_pattern = {
+          '.vscode',
           '**/.env*',
         },
       },
