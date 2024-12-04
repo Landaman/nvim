@@ -34,7 +34,7 @@ return {
           'diff',
           {
             'diagnostics',
-            update_in_insert = true,
+            update_in_insert = false,
             symbols = {
               error = vim.g.diagnostic_signs[vim.diagnostic.severity.ERROR],
               warn = vim.g.diagnostic_signs[vim.diagnostic.severity.WARN],
