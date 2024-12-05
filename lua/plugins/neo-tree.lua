@@ -69,7 +69,10 @@ return {
         return '**/' .. path -- For some reason, if you don't do this, some globs don't work 🤷
       end, vim.list_extend(folders, files))
 
-      return vim.tbl_map(vim.g.os_encode_path_separators, joined)
+      return vim.tbl_map(function(path)
+        local result, _ = path:gsub('\\', '\\\\') -- For some reason we delete the \s on Windows if we don't do this
+        return result
+      end, vim.tbl_map(vim.g.os_encode_path_separators, joined))
     end
 
     return {
