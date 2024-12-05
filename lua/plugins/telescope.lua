@@ -143,39 +143,44 @@ return {
     { 'folke/trouble.nvim' },
   },
   opts = function()
+    --- Pre-processes a filter to contain the items in the form Telescope expects
+    ---@param filter {folders: table<string>, files: table<string>}
+    ---@return table<string> resulting files
+    function pre_process_filters(filter)
+      local folders = vim.tbl_map(
+        function(folder)
+          return folder .. '/.*'
+        end,
+        vim.tbl_map(function(result)
+          return result:sub(2, result:len() - 1)
+        end, vim.tbl_map(require('neo-tree.sources.filesystem.lib.globtopattern').globtopattern, filter.folders))
+      )
+      local files = vim.tbl_map(function(result)
+        return result:sub(2, result:len() - 1)
+      end, vim.tbl_map(require('neo-tree.sources.filesystem.lib.globtopattern').globtopattern, filter.files))
+
+      -- Join them
+      local joined = vim.list_extend(folders, files)
+
+      local result = vim
+        .iter(joined)
+        :map(function(value)
+          return {
+            '/' .. value,
+            '^' .. value,
+          }
+        end)
+        :flatten()
+        :map(function(value)
+          return vim.g.os_encode_path_separators(value) -- Encode the path separators
+        end)
+        :totable()
+
+      return result
+    end
     return {
-      -- You can put your default mappings / updates / etc. in here
-      --  All the info you're looking for is in `:help telescope.setup()`
-      --
       defaults = {
-        file_ignore_patterns = {
-          '^node_modules[/\\].*',
-          '[/\\]node_modules[/\\].*',
-          '[/\\]%.git[/\\].*',
-          '^%.git[/\\].*',
-          '^%.venv[/\\].*',
-          '[/\\]%.venv[/\\].*',
-          '^__pycache__[/\\].*',
-          '[/\\]__pycache__[/\\].*',
-          '[/\\]%.metals[/\\].*',
-          '[/\\]%.bloop[/\\].*',
-          '[/\\]%.ammonite[/\\].*',
-          '[/\\]metals%.sbt',
-          '^%.metals[/\\].*',
-          '^%.bloop[/\\].*',
-          '^%.ammonite[/\\].*',
-          '^metals%.sbt',
-          '^%.turbo[/\\].*',
-          '[/\\]%.turbo[/\\].*',
-          '^%.firebase[/\\].*',
-          '[/\\]%.firebase[/\\].*',
-          '^%.next[/\\].*',
-          '[/\\]%.next[/\\].*',
-          '^%.svelte%-kit[/\\].*',
-          '[/\\]%.svelte%-kit[/\\].*',
-          '^%.husky[/\\]_[/\\].*',
-          '[/\\]%.husky[/\\]_[/\\].*',
-        },
+        file_ignore_patterns = pre_process_filters(vim.g.file_visibility.hide),
         mappings = {
           n = {
             ['<C-Q>'] = require('trouble.sources.telescope').open,

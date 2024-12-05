@@ -90,6 +90,57 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+vim.g.file_visibility = {
+  always_show = {
+    files = { '.env*' },
+    folders = { '.vscode' },
+  },
+  hide = {
+    files = {
+      'metals.sbt',
+    },
+    folders = {
+      'node_modules',
+      '.git',
+      '.venv',
+      '__pycache__',
+      '.metals',
+      '.bloop',
+      '.ammonite',
+      '.turbo',
+      '.firebase',
+      '.next',
+      '.svelte-kit',
+      '.husky/_',
+    },
+  },
+  never_show = { files = { '.DS_Store' }, folders = { '.git' } },
+}
+
+--- Encodes a string to make sure pattern characters are interpreted literally
+---@param pattern string the pattern to encode
+---@return string the encoded pattern
+vim.g.encode_pattern_characters = function(pattern)
+  local result
+  result, _ = pattern:gsub('([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
+  return result
+end
+
+--- Encodes a folder pattern to have the correct path separators based on the OS
+---@param pattern string pattern to encode separators for
+---@return string the encoded pattern
+vim.g.os_encode_path_separators = function(pattern)
+  local result
+  if vim.fn.has 'win32' == 1 then
+    result, _ = pattern:gsub('/', '\\')
+  else
+    result, _ = pattern:gsub('\\', '/')
+  end
+
+  return result
+end
+
+--- Closes the provided buffer, force closing it if it is not modifable
 ---@param buf number?
 vim.g.close_buffer = function(buf)
   buf = buf or 0
@@ -97,12 +148,12 @@ vim.g.close_buffer = function(buf)
 
   if not vim.bo[buf].modifiable then
     if vim.api.nvim_buf_is_valid(buf) then
-      pcall(vim.cmd, 'bdelete! ' .. buf)
+      pcall(vim.cmd, 'bdelete! ' .. buf) -- Force close including window, which helps with floats, etc
     end
     return
   end
 
-  Snacks.bufdelete(buf)
+  Snacks.bufdelete(buf) -- Otherwise, preserve window layout
 end
 
 vim.loader.enable() -- Enable the faster plugin loader

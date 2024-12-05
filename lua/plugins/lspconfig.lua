@@ -59,7 +59,7 @@ local servers = {
     settings = {
       Lua = {
         completion = {
-          callSnippet = 'Replace',
+          callSnippet = 'Disable',
         },
         hint = {
           enable = true,

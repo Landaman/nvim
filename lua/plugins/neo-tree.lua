@@ -23,7 +23,7 @@ return {
           unlet g:loaded_netrw
           unlet g:loaded_netrwPlugin
           runtime! plugin/netrwPlugin.vim
-          silent Explore %
+ (1, 1)         silent Explore %
         ]]
             vim.api.nvim_clear_autocmds { group = 'RemoteFile' }
             break
@@ -52,58 +52,64 @@ return {
       silent = true,
     },
   },
-  opts = {
-    filesystem = {
-      filtered_items = {
-        visible = true,
-        hide_dotfiles = false,
-        hide_gitignored = true,
-        hide_hidden = false,
-        hide_by_pattern = {
-          '.git',
-          'node_modules',
-          '.venv',
-          '__pycache__',
-          '.metals',
-          '.bloop',
-          '.ammonite',
-          'metals.sbt',
+  opts = function()
+    --- Pre-processes a filter to contain the items in the form Neo-Tree expects
+    ---@param filter {folders: table<string>, files: table<string>}
+    ---@return table<string> resulting files
+    function pre_process_filters(filter)
+      -- Get folders and files preprocessed
+      local folders = filter.folders
+      local files = filter.files
+
+      -- Join them
+      local joined = vim.tbl_map(function(path)
+        if path[0] == '/' then
+          return path -- If we actually want it at the start, respect that
+        end
+        return '**/' .. path -- For some reason, if you don't do this, some globs don't work 🤷
+      end, vim.list_extend(folders, files))
+
+      return vim.tbl_map(vim.g.os_encode_path_separators, joined)
+    end
+
+    return {
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = true,
+          hide_hidden = false,
+          hide_by_pattern = pre_process_filters(vim.g.file_visibility.hide),
+          never_show_by_pattern = pre_process_filters(vim.g.file_visibility.never_show),
+          always_show_by_pattern = pre_process_filters(vim.g.file_visibility.always_show),
         },
-        never_show_by_pattern = {
-          '.git',
-          '.DS_Store',
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = false,
         },
-        always_show_by_pattern = {
-          '.vscode',
-          '**/.env*',
-        },
-      },
-      follow_current_file = {
-        enabled = true,
-        leave_dirs_open = false,
-      },
-      hijack_netrw_behavior = 'open_default',
-      use_libuv_file_watcher = false,
-      window = {
-        mappings = {
-          ['\\'] = 'close_window',
-        },
-      },
-    },
-    default_component_configs = {
-      indent = {
-        with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
-        expander_collapsed = '',
-        expander_expanded = '',
-      },
-      git_status = {
-        symbols = {
-          unstaged = '󰄱',
-          staged = '󰱒',
+        hijack_netrw_behavior = 'open_default',
+        use_libuv_file_watcher = false,
+        window = {
+          mappings = {
+            ['\\'] = 'close_window',
+          },
         },
       },
-    },
-  },
+      default_component_configs = {
+        indent = {
+          with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
+          expander_collapsed = '',
+          expander_expanded = '',
+        },
+        git_status = {
+          symbols = {
+            unstaged = '󰄱',
+            staged = '󰱒',
+          },
+        },
+      },
+    }
+  end,
   config = function(_, opts)
     local function on_move(data)
       Snacks.rename.on_rename_file(data.source, data.destination)
