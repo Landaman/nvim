@@ -46,8 +46,8 @@ return {
       },
       extensions = {
         'lazy',
-        'neo-tree',
         'mason',
+        'oil',
         'trouble',
         'nvim-dap-ui',
       },

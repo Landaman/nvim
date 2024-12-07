@@ -146,18 +146,11 @@ return {
     --- Pre-processes a filter to contain the items in the form Telescope expects
     ---@param filter {folders: table<string>, files: table<string>}
     ---@return table<string> resulting files
-    function pre_process_filters(filter)
-      local folders = vim.tbl_map(
-        function(folder)
-          return folder .. '/.*'
-        end,
-        vim.tbl_map(function(result)
-          return result:sub(2, result:len() - 1)
-        end, vim.tbl_map(require('neo-tree.sources.filesystem.lib.globtopattern').globtopattern, filter.folders))
-      )
-      local files = vim.tbl_map(function(result)
-        return result:sub(2, result:len() - 1)
-      end, vim.tbl_map(require('neo-tree.sources.filesystem.lib.globtopattern').globtopattern, filter.files))
+    local function pre_process_filters(filter)
+      local folders = vim.tbl_map(function(folder)
+        return folder .. '%/.*'
+      end, filter.folders)
+      local files = filter.files
 
       -- Join them
       local joined = vim.list_extend(folders, files)

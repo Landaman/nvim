@@ -46,6 +46,10 @@ vim.diagnostic.config {
       return tostring(i), '' -- This should never happen
     end,
     suffix = function(diagnostic)
+      if diagnostic.source == nil then
+        return '', '' -- This happens with Oil, among others
+      end
+
       return ' ' .. diagnostic.source, 'TroubleSource'
     end,
   },
