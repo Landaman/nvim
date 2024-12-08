@@ -239,11 +239,81 @@ return {
       end)
     end
 
+    local git_column = {
+      name = 'git_status',
+      callback = function(entry, bufnr)
+        local dir = require('oil').get_current_dir(bufnr)
+        local entry_name = entry[2]
+
+        -- If no dir, we can't do anything =( e.g., remote
+        if dir == nil then
+          return nil
+        end
+
+        if git_status[dir].ignored[entry_name] == true then
+          return { ' ', 'OilHidden' } -- If it's not hidden and git says it is, it's been overridden so display the correct highlight
+        end
+
+        -- Check untracked
+        if git_status[dir].untracked[entry_name] then
+          if git_status[dir].untracked[entry_name] == true then
+            return { ' ', 'OilGitUntracked' }
+          else
+            -- This is when we are the parent of something untracked, in this case we
+            -- are modified
+            local type = git_status[dir].untracked[entry_name]
+            assert(type == 'dir')
+            return { '󰄱 ', 'OilGitModified' }
+          end
+        end
+
+        local status = nil
+        local staged = false
+        if git_status[dir].unstaged[entry_name] then
+          staged = false
+          status = git_status[dir].unstaged[entry_name].status
+        elseif git_status[dir].staged[entry_name] then
+          staged = true
+          status = git_status[dir].staged[entry_name].status
+        end
+
+        -- Show status for each folder
+        if status ~= nil then
+          if status == 'A' or status == 'C' or status == 'T' then -- Add, create, typechange
+            return { ' ', 'OilGitAdded' }
+          end
+
+          if status == 'M' then
+            return staged and { ' ', 'OilGitStaged' } or { '󰄱 ', 'OilGitModified' }
+          end
+
+          if status == 'R' then
+            return { staged and { ' ', 'OilGitStaged' } or '󰄱 ', 'OilGitRenamed' }
+          end
+
+          if status == 'U' then
+            return { ' ', 'OilGitConflict' }
+          end
+
+          assert(false) -- Assert we understand status
+        end
+
+        return nil
+      end,
+      parse = function(line)
+        return line:match '^(.*)%s+(.*)$'
+      end,
+    }
+
     return {
       refresh_git_status = function()
         git_status = new_git_status()
       end,
       watch_for_changes = true,
+      columns = {
+        'icon',
+        git_column,
+      },
       constrain_cursor = 'name', -- Do not allow editing details when those are shown
       view_options = {
         show_hidden = true,
@@ -364,9 +434,10 @@ return {
                   'mtime',
                   highlight = 'OilHidden',
                 },
+                git_column,
               }
             else
-              require('oil').set_columns { 'icon' }
+              require('oil').set_columns { 'icon', git_column }
             end
           end,
         },
