@@ -254,6 +254,11 @@ return {
           return { ' ', 'OilHidden' } -- If it's not hidden and git says it is, it's been overridden so display the correct highlight
         end
 
+        -- If the entire directory is untracked, this is untracked
+        if git_status[dir].untracked['.'] == true then
+          return { ' ', 'OilGitUntracked' }
+        end
+
         -- Check untracked
         if git_status[dir].untracked[entry_name] then
           if git_status[dir].untracked[entry_name] == true then
@@ -374,6 +379,11 @@ return {
 
           if is_hidden or git_status[dir].ignored[entry.name] == true then
             return 'OilHidden' -- If it's not hidden and git says it is, it's been overridden so display the correct highlight
+          end
+
+          -- If the entire directory is untracked, this is untracked
+          if git_status[dir].untracked['.'] == true then
+            return 'OilGitUntracked'
           end
 
           -- Check untracked
