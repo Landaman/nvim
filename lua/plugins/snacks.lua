@@ -9,6 +9,7 @@ return {
       preset = {
         keys = {
           { icon = ' ', key = 'f', desc = 'Find File', action = '<leader>sf' },
+          { icon = ' ', key = 'F', desc = 'Find Directory', action = '<leader>sF' },
           { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
           { icon = ' ', key = 'g', desc = 'Find Text', action = '<leader>sg' },
           {

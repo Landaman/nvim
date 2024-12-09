@@ -10,11 +10,11 @@ return {
   cmd = 'Telescope',
   keys = {
     {
-      '<leader>sh',
+      '<leader>s?',
       function()
         require('telescope.builtin').help_tags()
       end,
-      desc = 'Search [h]elp',
+      desc = '[?] Search help',
     },
     {
       '<leader>sk',
@@ -38,20 +38,39 @@ return {
     {
       '<leader>sF',
       function()
+        require('telescope').extensions.oil.oil()
+      end,
+      desc = '[F] Search directories',
+    },
+    {
+      '<leader>sh',
+      function()
         require('telescope.builtin').find_files {
           hidden = true,
           no_ignore = true,
           no_ignore_parent = true,
+          prompt_title = 'All Files',
         }
       end,
-      desc = 'Search hidden [F]iles',
+      desc = 'Search [h]idden files',
+    },
+    {
+      '<leader>sH',
+      function()
+        require('telescope').extensions.oil.oil {
+          hidden = true,
+          no_ignore = true,
+          prompt_title = 'All Directories',
+        }
+      end,
+      desc = 'Search [H]idden directories',
     },
     {
       '<leader>ss',
       function()
         require('telescope.builtin').builtin()
       end,
-      desc = 'Search [s]elect Telescope',
+      desc = 'Search Telescope[s]',
     },
     {
       '<leader>sw',
@@ -65,14 +84,14 @@ return {
       function()
         require('telescope.builtin').live_grep()
       end,
-      desc = 'Search by [g]rep',
+      desc = 'Search [g]rep',
     },
     {
       '<leader>sd',
       function()
         require('telescope.builtin').diagnostics()
       end,
-      desc = 'Search [d]iagnostic',
+      desc = 'Search [d]iagnostics',
     },
     {
       '<leader>sr',
@@ -86,7 +105,7 @@ return {
       function()
         require('telescope.builtin').oldfiles()
       end,
-      desc = '[.] Search Recent Files',
+      desc = '[.] Search recent files',
     },
     {
       '<leader><leader>',
@@ -110,7 +129,7 @@ return {
           prompt_title = 'Live Grep in Open Files',
         }
       end,
-      desc = '[/] Search in Open Files',
+      desc = '[/] Search in open files',
     },
     {
       '<leader>sn',
@@ -184,6 +203,12 @@ return {
       },
       -- pickers = {}
       extensions = {
+        oil = {
+          hidden = true,
+          debug = false,
+          no_ignore = false,
+          show_preview = true,
+        },
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
         },
