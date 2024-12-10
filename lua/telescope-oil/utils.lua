@@ -1,6 +1,7 @@
 local action_set = require 'telescope.actions.set'
 local action_state = require 'telescope.actions.state'
 local actions = require 'telescope.actions'
+local previewers = require 'telescope.previewers.buffer_previewer'
 local conf = require('telescope.config').values
 local finders = require 'telescope.finders'
 local make_entry = require 'telescope.make_entry'
@@ -64,7 +65,43 @@ M.get_dirs = function(opts, fn)
 
   local getPreviewer = function()
     if opts.show_preview then
-      return conf.file_previewer(opts)
+      return previewers.new_buffer_previewer {
+        define_preview = function(self, _, _)
+          -- Schedule an update
+          vim.schedule(function()
+            if not vim.api.nvim_buf_is_valid(self.state.bufnr) then
+              return -- Double check buffer exists
+            end
+            -- Double check we're not already mutating
+            local mutator = require 'oil.mutator'
+            if vim.bo[self.state.bufnr].modified or vim.b[self.state.bufnr].oil_dirty or mutator.is_mutating() then
+              return
+            end
+
+            -- If the buffer is currently visible, rerender
+            for _, winid in ipairs(vim.api.nvim_list_wins()) do
+              if vim.api.nvim_win_is_valid(winid) and vim.api.nvim_win_get_buf(winid) == self.state.bufnr then
+                require('oil.view').initialize(self.state.bufnr)
+                return
+              end
+            end
+
+            -- If it is not currently visible, mark it as dirty
+            vim.b[self.state.bufnr].oil_dirty = {}
+          end)
+        end,
+        get_buffer_by_name = function(self, entry)
+          local name = entry[1]
+          local cwd = entry['cwd']
+          local buffer_name = require('oil').get_url_for_path(cwd .. require('oil.fs').sep .. name .. require('oil.fs').sep) -- The trailing '/' prevents us from getting the same name as another Oil buf that already exists
+
+          vim.schedule(function()
+            vim.api.nvim_buf_set_name(self.state.bufnr, buffer_name)
+          end)
+
+          return buffer_name
+        end,
+      }
     else
       return nil
     end
