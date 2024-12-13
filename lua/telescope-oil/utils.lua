@@ -1,4 +1,4 @@
-local action_set = require 'telescope.actions.set'
+local action_set = require 'telescope.actions'
 local action_state = require 'telescope.actions.state'
 local actions = require 'telescope.actions'
 local previewers = require 'telescope.previewers.buffer_previewer'
@@ -11,7 +11,7 @@ local time = require 'telescope-oil.time'
 
 local M = {}
 
-M.get_dirs = function(opts, fn)
+M.get_dirs = function(opts)
   if opts.debug then
     time.time_start 'get_dirs'
   end
@@ -119,19 +119,31 @@ M.get_dirs = function(opts, fn)
             previewer = getPreviewer(),
             sorter = conf.file_sorter(opts),
             attach_mappings = function(prompt_bufnr)
-              action_set.select:replace(function()
-                local current_picker = action_state.get_current_picker(prompt_bufnr)
-                local dirs = {}
-                local selections = current_picker:get_multi_selection()
-                if vim.tbl_isempty(selections) then
-                  table.insert(dirs, action_state.get_selected_entry().value)
-                else
-                  for _, selection in ipairs(selections) do
-                    table.insert(dirs, selection.value)
-                  end
-                end
-                actions.close(prompt_bufnr, current_picker.initial_mode == 'insert')
-                fn(dirs[1])
+              action_set.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local dir = action_state.get_selected_entry()[1]
+                require('oil').open(dir)
+              end)
+
+              action_set.select_tab:replace(function()
+                actions.close(prompt_bufnr)
+                local dir = action_state.get_selected_entry()[1]
+                vim.cmd.tabe()
+                require('oil').open(dir)
+              end)
+
+              action_set.select_horizontal:replace(function()
+                actions.close(prompt_bufnr)
+                local dir = action_state.get_selected_entry()[1]
+                vim.cmd.new()
+                require('oil').open(dir)
+              end)
+
+              action_set.select_vertical:replace(function()
+                actions.close(prompt_bufnr)
+                local dir = action_state.get_selected_entry()[1]
+                vim.cmd.vnew()
+                require('oil').open(dir)
               end)
               return true
             end,
