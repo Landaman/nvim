@@ -81,6 +81,12 @@ M.get_dirs = function(opts)
             -- If the buffer is currently visible, rerender
             for _, winid in ipairs(vim.api.nvim_list_wins()) do
               if vim.api.nvim_win_is_valid(winid) and vim.api.nvim_win_get_buf(winid) == self.state.bufnr then
+                -- This needs to be done before Oil tries to render, and trying to do it in get_buffer_by_name is a potential race condition
+                -- since there it's in a different schedule
+                if vim.api.nvim_buf_get_name(self.state.bufnr) ~= self.state.bufname then
+                  vim.api.nvim_buf_set_name(self.state.bufnr, self.state.bufname)
+                end
+
                 require('oil.view').initialize(self.state.bufnr)
                 return
               end
@@ -90,14 +96,10 @@ M.get_dirs = function(opts)
             vim.b[self.state.bufnr].oil_dirty = {}
           end)
         end,
-        get_buffer_by_name = function(self, entry)
+        get_buffer_by_name = function(_, entry)
           local name = entry[1]
           local cwd = entry['cwd']
           local buffer_name = require('oil').get_url_for_path(cwd .. require('oil.fs').sep .. name .. require('oil.fs').sep) -- The trailing '/' prevents us from getting the same name as another Oil buf that already exists
-
-          vim.schedule(function()
-            vim.api.nvim_buf_set_name(self.state.bufnr, buffer_name)
-          end)
 
           return buffer_name
         end,
