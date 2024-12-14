@@ -117,24 +117,22 @@ return {
             ret[line] = true -- If we only have one part, it's just the file name, just process that
 
             -- If this is a sub-item, the parent should be marked as modified
-            local item_split = vim.split(line, require('oil.fs').sep) -- Split to the most basic path part, because sometimes diffs have multiple layers
+            local item_split = vim.split(line, '/') -- Split to the most basic path part, because sometimes diffs have multiple layers. Git always uses '/' so respect that
             if #item_split > 1 then
               ret[item_split[1]] = 'dir'
             end
           else
-            local status = line_split[1] -- Status
-            local item = line_split[2] -- The file
+            local status = line_split[1]:sub(1, 1) -- Status. Trim out percentages, etc, we only want the first character
+            local item = #line_split == 2 and line_split[2] or line_split[3] -- The file. For M, etc the 2nd one is the real path so respect that
 
-            local item_split = vim.split(item, require('oil.fs').sep) -- Split to the most basic path part, because sometimes diffs have multiple layers
+            local item_split = vim.split(item, '/') -- Split to the most basic path part, because sometimes diffs have multiple layers. Git always uses '/' so respect that
 
             if #item_split == 1 then -- This means the raw directory/file itself has changed, so keep status
               ret[item_split[1]] = { -- This just removes the /, if there is one
                 status = status,
               }
             else -- Change status to M, because something in the folder was changed not the folder itself
-              ret[item_split[1]] = {
-                status = 'M',
-              }
+              ret[item_split[1]] = { status = 'M' }
             end
           end
         end
@@ -284,7 +282,7 @@ return {
 
         -- Show status for each folder
         if status ~= nil then
-          if status == 'A' or status == 'C' or status == 'T' then -- Add, create, typechange
+          if status == 'A' or status == 'C' or status == 'T' or (status == 'M' and not git_status[dir].tracked[entry_name]) then -- Add, create, typechange, last accounts for folder
             return { ' ', 'OilGitAdded' }
           end
 
@@ -293,7 +291,7 @@ return {
           end
 
           if status == 'R' then
-            return { staged and { ' ', 'OilGitStaged' } or '󰄱 ', 'OilGitRenamed' }
+            return staged and { ' ', 'OilGitStaged' } or { '󰄱 ', 'OilGitRenamed' }
           end
 
           if status == 'U' then
@@ -408,7 +406,7 @@ return {
 
           -- Show status for each folder
           if status ~= nil then
-            if status == 'A' or status == 'C' or status == 'T' then -- Add, create, typechange
+            if status == 'A' or status == 'C' or status == 'T' or (status == 'M' and not git_status[dir].tracked[entry.name]) then -- Add, create, typechange, last accounts for folder
               return 'OilGitAdded'
             end
 
