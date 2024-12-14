@@ -43,6 +43,12 @@ return {
             },
           },
         },
+        lualine_c = {
+          {
+            'filename',
+            path = 1,
+          },
+        },
       },
       extensions = {
         'lazy',
