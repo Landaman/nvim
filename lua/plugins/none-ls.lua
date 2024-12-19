@@ -41,6 +41,7 @@ return {
 
     local lsp_save_augroup = vim.api.nvim_create_augroup('LspSaveFormatting', {})
     null_ls.setup {
+      update_in_insert = false,
       on_attach = function(_, bufnr)
         vim.api.nvim_clear_autocmds { group = lsp_save_augroup, buffer = bufnr }
         vim.api.nvim_create_autocmd('BufWritePre', {
