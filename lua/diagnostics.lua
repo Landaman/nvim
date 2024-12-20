@@ -18,9 +18,9 @@ end
 vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next diagnostic' })
 vim.keymap.set('n', '[d', diagnostic_goto(false), { desc = 'Prev diagnostic' })
 vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next error' })
-vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Prev error' })
+vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Previous error' })
 vim.keymap.set('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next warning' })
-vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev warning' })
+vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Previous warning' })
 
 vim.diagnostic.config {
   severity_sort = true,

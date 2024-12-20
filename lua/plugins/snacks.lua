@@ -31,6 +31,7 @@ return {
     statuscolumn = { enabled = true },
     input = { enabled = true },
     words = { enabled = true },
+    scratch = { enabled = true },
     scope = {
       enabled = true,
       keys = {
@@ -56,7 +57,7 @@ return {
             cursor = false,
             edge = true,
             treesitter = { blocks = { enabled = false } },
-            desc = 'Jump to top edge of scope',
+            desc = 'Top edge of scope',
           },
           [']i'] = {
             min_size = 1, -- allow single line scopes
@@ -64,7 +65,7 @@ return {
             cursor = false,
             edge = true,
             treesitter = { blocks = { enabled = false } },
-            desc = 'Jump to bottom edge of scope',
+            desc = 'Bottom edge of scope',
           },
         },
       },
@@ -90,6 +91,24 @@ return {
     },
   },
   config = function(_, opts)
+    -- Setup scratch commands
+    vim.api.nvim_create_user_command('Scratch', function(cmd_opts)
+      local fargs = cmd_opts.fargs
+      if #fargs == 0 or fargs[1] == 'toggle' then
+        Snacks.scratch()
+        return
+      elseif fargs[1] == 'select' then
+        Snacks.scratch.select()
+        return
+      else
+        vim.notify('Unknown argument ' .. fargs[1], vim.log.levels.ERROR)
+      end
+    end, {
+      nargs = '?',
+      complete = function()
+        return { 'select', 'toggle' }
+      end,
+    })
     local notify = vim.notify
     require('snacks').setup(opts)
     -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
