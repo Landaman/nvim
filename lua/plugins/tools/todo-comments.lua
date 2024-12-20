@@ -10,17 +10,17 @@ return {
       {
         '<leader>wo',
         '<cmd>Trouble todo<cr>',
-        desc = 'T[o]do list',
+        desc = 'Todo list',
       },
       {
         '<leader>do',
         '<cmd>Trouble todo filter.buf=0<cr>',
-        desc = 'Document t[o]do list',
+        desc = 'Document todo list',
       },
       {
         '<leader>so',
         '<cmd>TodoTelescope<cr>',
-        desc = 'Search t[o]do',
+        desc = 'Search todo',
       },
     },
   },

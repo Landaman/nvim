@@ -31,7 +31,44 @@ return {
     statuscolumn = { enabled = true },
     input = { enabled = true },
     words = { enabled = true },
-    scope = { enabled = true },
+    scope = {
+      enabled = true,
+      keys = {
+        textobject = {
+          ii = {
+            min_size = 2, -- minimum size of the scope
+            edge = false, -- inner scope
+            cursor = false,
+            treesitter = { blocks = { enabled = false } },
+            desc = 'Inner scope',
+          },
+          ai = {
+            cursor = false,
+            min_size = 2, -- minimum size of the scope
+            treesitter = { blocks = { enabled = false } },
+            desc = 'Full scope',
+          },
+        },
+        jump = {
+          ['[i'] = {
+            min_size = 1, -- allow single line scopes
+            bottom = false,
+            cursor = false,
+            edge = true,
+            treesitter = { blocks = { enabled = false } },
+            desc = 'Jump to top edge of scope',
+          },
+          [']i'] = {
+            min_size = 1, -- allow single line scopes
+            bottom = true,
+            cursor = false,
+            edge = true,
+            treesitter = { blocks = { enabled = false } },
+            desc = 'Jump to bottom edge of scope',
+          },
+        },
+      },
+    },
     styles = {
       notification = {
         wo = { wrap = true }, -- Wrap notifications
@@ -49,7 +86,7 @@ return {
       function()
         Snacks.notifier.hide()
       end,
-      desc = 'Dismiss [n]otifications',
+      desc = 'Dismiss notifications',
     },
   },
   config = function(_, opts)

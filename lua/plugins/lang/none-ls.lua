@@ -37,7 +37,7 @@ return {
 
     vim.keymap.set({ 'n' }, '<leader>ff', function()
       format_with_lsp(vim.api.nvim_get_current_buf())
-    end, { desc = '[f]ormat buffer' })
+    end, { desc = 'Format buffer' })
 
     local lsp_save_augroup = vim.api.nvim_create_augroup('LspSaveFormatting', {})
     null_ls.setup {

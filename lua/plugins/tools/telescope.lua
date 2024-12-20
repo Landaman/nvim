@@ -14,14 +14,14 @@ return {
       function()
         require('telescope.builtin').help_tags()
       end,
-      desc = '[?] Search help',
+      desc = 'Search help',
     },
     {
       '<leader>sk',
       function()
         require('telescope.builtin').keymaps()
       end,
-      desc = 'Search [k]eymaps',
+      desc = 'Search keymaps',
     },
     {
       '<leader>sf',
@@ -33,14 +33,14 @@ return {
           require('telescope.builtin').find_files {}
         end
       end,
-      desc = 'Search [f]iles',
+      desc = 'Search files',
     },
     {
       '<leader>sF',
       function()
         require('telescope').extensions.oil.oil()
       end,
-      desc = '[F] Search directories',
+      desc = 'Search directories',
     },
     {
       '<leader>sh',
@@ -52,7 +52,7 @@ return {
           prompt_title = 'All Files',
         }
       end,
-      desc = 'Search [h]idden files',
+      desc = 'Search hidden files',
     },
     {
       '<leader>sH',
@@ -63,63 +63,63 @@ return {
           prompt_title = 'All Directories',
         }
       end,
-      desc = 'Search [H]idden directories',
+      desc = 'Search hidden directories',
     },
     {
       '<leader>ss',
       function()
         require('telescope.builtin').builtin()
       end,
-      desc = 'Search Telescope[s]',
+      desc = 'Search Telescopes',
     },
     {
       '<leader>sw',
       function()
         require('telescope.builtin').grep_string()
       end,
-      desc = 'Search current [w]ord',
+      desc = 'Search current word',
     },
     {
       '<leader>sg',
       function()
         require('telescope.builtin').live_grep()
       end,
-      desc = 'Search [g]rep',
+      desc = 'Search grep',
     },
     {
       '<leader>sd',
       function()
         require('telescope.builtin').diagnostics()
       end,
-      desc = 'Search [d]iagnostics',
+      desc = 'Search diagnostics',
     },
     {
       '<leader>sr',
       function()
         require('telescope.builtin').resume()
       end,
-      desc = 'Search [r]esume',
+      desc = 'Search resume',
     },
     {
       '<leader>s.',
       function()
         require('telescope.builtin').oldfiles()
       end,
-      desc = '[.] Search recent files',
+      desc = 'Search recent files',
     },
     {
       '<leader><leader>',
       function()
         require('telescope.builtin').buffers()
       end,
-      desc = '[ ] Find existing buffers',
+      desc = 'Find existing buffers',
     },
     {
       '<leader>/',
       function()
         require('telescope.builtin').current_buffer_fuzzy_find()
       end,
-      desc = '[/] Fuzzily search in current buffer',
+      desc = 'Fuzzily search in current buffer',
     },
     {
       '<leader>s/',
@@ -129,14 +129,14 @@ return {
           prompt_title = 'Live Grep in Open Files',
         }
       end,
-      desc = '[/] Search in open files',
+      desc = 'Search in open files',
     },
     {
       '<leader>sn',
       function()
         require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }
       end,
-      desc = 'Search [n]eovim files',
+      desc = 'Search neovim files',
     },
   },
   branch = '0.1.x',

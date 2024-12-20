@@ -6,12 +6,12 @@ return {
     {
       '<leader>wq',
       '<cmd>Trouble diagnostics toggle<cr>',
-      desc = 'Trouble: [q] Workspace diagnostics',
+      desc = 'Trouble workspace diagnostics',
     },
     {
       '<leader>dd',
       '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
-      desc = 'Trouble: Document [d]iagnostics',
+      desc = 'Trouble document diagnostics',
     },
   },
 }

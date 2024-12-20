@@ -35,63 +35,63 @@ return {
       function()
         require('dap').continue()
       end,
-      desc = 'Debug: Start/Continue',
+      desc = 'Debug start/continue',
     },
     {
       '<F6>',
       function()
         require('dap').run_last()
       end,
-      desc = 'Debug: Restart',
+      desc = 'Debug restart',
     },
     {
       '<F7>',
       function()
         require('dap').terminate()
       end,
-      desc = 'Debug: Terminate',
+      desc = 'Debug terminate',
     },
     {
       '<F1>',
       function()
         require('dap').step_into()
       end,
-      desc = 'Debug: Step Into',
+      desc = 'Step into',
     },
     {
       '<F2>',
       function()
         require('dap').step_over()
       end,
-      desc = 'Debug: Step Over',
+      desc = 'Step over',
     },
     {
       '<F3>',
       function()
         require('dap').step_out()
       end,
-      desc = 'Debug: Step Out',
+      desc = 'Step out',
     },
     {
       '<F4>',
       function()
         require('dap').step_back()
       end,
-      desc = 'Debug: Step Back',
+      desc = 'Step back',
     },
     {
       '<leader>b',
       function()
         require('dap').toggle_breakpoint()
       end,
-      desc = 'Debug: Toggle [b]reakpoint',
+      desc = 'Toggle breakpoint',
     },
     {
       '<leader>B',
       function()
         require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
       end,
-      desc = 'Debug: Set [B]reakpoint',
+      desc = 'Set breakpoint',
     },
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     {
@@ -99,7 +99,7 @@ return {
       function()
         require('dapui').toggle()
       end,
-      desc = 'Debug: See last session result',
+      desc = 'See last debug session result',
     },
     {
       '<F9>',
@@ -109,6 +109,7 @@ return {
           reset = true,
         }
       end,
+      desc = 'Reset debug UI layout',
     },
   },
   opts = function()

@@ -4,14 +4,14 @@
 -- Buffer read/close commands
 vim.keymap.set('n', '<leader>fd', function()
   vim.g.close_buffer() -- Smart close buffer based on window
-end, { desc = '[d] Close current buffer' })
+end, { desc = 'Close current buffer' })
 vim.keymap.set('n', '<leader>fD', function()
   vim.cmd 'bdelete' -- Close buffer and window
-end, { desc = '[D]elete current buffer' })
+end, { desc = 'Delete current buffer' })
 
 vim.keymap.set('n', '<leader>fw', function()
   vim.cmd 'w'
-end, { desc = '[w]rite current buffer' })
+end, { desc = 'Write current buffer' })
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode

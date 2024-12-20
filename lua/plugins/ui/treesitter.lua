@@ -26,12 +26,12 @@ return {
 
               keymaps = {
                 -- You can use the capture groups defined in textobjects.scm
-                ['am'] = { query = '@function.outer', desc = '[m] Around function' },
-                ['im'] = { query = '@function.inner', desc = '[m] Inside function' },
-                ['ac'] = { query = '@class.outer', desc = 'Around [c]lass' },
-                ['ic'] = { query = '@class.inner', desc = 'Inside [c]lass' },
-                ['aa'] = { query = '@parameter.outer', desc = 'Around p[a]rameter' },
-                ['ia'] = { query = '@parameter.inner', desc = 'Inside p[a]rameter' },
+                ['am'] = { query = '@function.outer', desc = 'Around function' },
+                ['im'] = { query = '@function.inner', desc = 'Inside function' },
+                ['ac'] = { query = '@class.outer', desc = 'Around class' },
+                ['ic'] = { query = '@class.inner', desc = 'Inside class' },
+                ['aa'] = { query = '@parameter.outer', desc = 'Around parameter' },
+                ['ia'] = { query = '@parameter.inner', desc = 'Inside parameter' },
               },
               -- You can choose the select mode (default is charwise 'v')
               --
@@ -55,10 +55,10 @@ return {
             swap = {
               enable = true,
               swap_previous = {
-                ['[p'] = { query = '@parameter.inner', desc = 'Swap with previous [p]arameter' },
+                ['[p'] = { query = '@parameter.inner', desc = 'Swap with previous parameter' },
               },
               swap_next = {
-                [']p'] = { query = '@parameter.inner', desc = 'Swap with next [p]arameter' },
+                [']p'] = { query = '@parameter.inner', desc = 'Swap with next parameter' },
               },
             },
             lsp_interop = {
@@ -66,32 +66,32 @@ return {
               border = 'none',
               floating_preview_opts = {},
               peek_definition_code = {
-                ['<leader>pm'] = { query = '@function.outer', desc = '[m] Peek outer function' },
-                ['<leader>pc'] = { query = '@class.outer', desc = 'Peek outer [c]lass' },
+                ['<leader>pm'] = { query = '@function.outer', desc = 'Peek outer function' },
+                ['<leader>pc'] = { query = '@class.outer', desc = 'Peek outer class' },
               },
             },
             move = {
               enable = true,
               set_jumps = true, -- whether to set jumps in the jumplist
               goto_next_start = {
-                [']m'] = { query = '@function.outer', desc = '[m] Next function start' },
-                [']c'] = { query = '@class.outer', desc = 'Next [c]lass start' },
-                [']a'] = { query = '@parameter.outer', desc = 'Next p[a]rameter start' },
+                [']m'] = { query = '@function.outer', desc = 'Next function start' },
+                [']c'] = { query = '@class.outer', desc = 'Next class start' },
+                [']a'] = { query = '@parameter.outer', desc = 'Next parameter start' },
               },
               goto_next_end = {
-                [']M'] = { query = '@function.outer', desc = '[M] Next function end' },
-                [']C'] = { query = '@class.outer', desc = 'Next [C]lass end' },
-                [']A'] = { query = '@parameter.outer', desc = 'Next p[A]rameter end' },
+                [']M'] = { query = '@function.outer', desc = 'Next function end' },
+                [']C'] = { query = '@class.outer', desc = 'Next class end' },
+                [']A'] = { query = '@parameter.outer', desc = 'Next parameter end' },
               },
               goto_previous_start = {
-                ['[m'] = { query = '@function.outer', desc = '[m] Previous function start' },
-                ['[c'] = { query = '@class.outer', desc = 'Previous [c]lass start' },
-                ['[a'] = { query = '@parameter.outer', desc = 'Previous p[a]rameter start' },
+                ['[m'] = { query = '@function.outer', desc = 'Previous function start' },
+                ['[c'] = { query = '@class.outer', desc = 'Previous class start' },
+                ['[a'] = { query = '@parameter.outer', desc = 'Previous parameter start' },
               },
               goto_previous_end = {
-                ['[M'] = { query = '@function.outer', desc = '[M] Previous function end' },
-                ['[C'] = { query = '@class.outer', desc = 'Previous [C]lass end' },
-                ['[A'] = { query = '@parameter.outer', desc = 'Previous p[A]rameter end' },
+                ['[M'] = { query = '@function.outer', desc = 'Previous function end' },
+                ['[C'] = { query = '@class.outer', desc = 'Previous class end' },
+                ['[A'] = { query = '@parameter.outer', desc = 'Previous parameter end' },
               },
             },
           },

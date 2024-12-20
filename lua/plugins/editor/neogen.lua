@@ -7,7 +7,7 @@ return {
       function()
         require('neogen').generate()
       end,
-      desc = 'Neogen: Generate [d]ocumentation',
+      desc = 'Generate code documentation',
     },
   },
   opts = {
