@@ -29,6 +29,7 @@ return {
     notifier = { enabled = true, timeout = 3000 },
     quickfile = { enabled = true },
     statuscolumn = { enabled = true },
+    input = { enabled = true },
     words = { enabled = true },
     styles = {
       notification = {

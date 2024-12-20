@@ -215,6 +215,17 @@ return {
       },
     }
   end,
+  init = function()
+    -- This makes it so that no matter what we load Telescope and it's picker when we try to select
+    vim.ui.select = function(...)
+      require('lazy').load { plugins = { 'telescope.nvim' } }
+      vim.ui.select(...)
+    end
+  end,
+  config = function(_, opts)
+    require('telescope').setup(opts)
+    require('telescope').load_extension 'ui-select' -- Setup the UI selector
+  end,
 }
 
 -- vim: ts=2 sts=2 sw=2 et

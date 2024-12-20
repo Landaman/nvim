@@ -23,7 +23,7 @@ return {
     { 'theHamsta/nvim-dap-virtual-text', opts = { clear_on_continue = false, enabled_commands = true } },
 
     -- Installs the debug adapters for you
-    { 'WhoIsSethDaniel/mason-tool-installer.nvim', opts = { ensure_installed = 'js-debug-adapter' } },
+    { 'WhoIsSethDaniel/mason-tool-installer.nvim', opts = { ensure_installed = { 'js-debug-adapter' } } },
     {
       'jay-babu/mason-nvim-dap.nvim',
       config = function() end, -- This is loaded when DAP itself loads
