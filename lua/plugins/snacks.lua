@@ -31,6 +31,7 @@ return {
     statuscolumn = { enabled = true },
     input = { enabled = true },
     words = { enabled = true },
+    scope = { enabled = true },
     styles = {
       notification = {
         wo = { wrap = true }, -- Wrap notifications
