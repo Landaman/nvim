@@ -31,7 +31,7 @@ return {
     },
 
     accept = { auto_brackets = { enabled = true } },
-    trigger = { signature_help = { enabled = true } },
+    signature = { enabled = true },
   },
   opts_extend = { 'sources.completion.enabled_providers' },
 }
