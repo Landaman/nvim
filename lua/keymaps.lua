@@ -14,7 +14,7 @@ vim.keymap.set('n', '<leader>fw', function()
 end, { desc = 'Write current buffer' })
 
 -- Buffer navigation
-vim.keymap.set('n', ']f', '<CMD>bprevious<CR>', { desc = 'Previous buffer' })
+vim.keymap.set('n', '[f', '<CMD>bprevious<CR>', { desc = 'Previous buffer' })
 vim.keymap.set('n', ']f', '<CMD>bnext<CR>', { desc = 'Next buffer' })
 
 -- Highlight when yanking (copying) text

@@ -19,25 +19,33 @@ return {
       ['<C-h>'] = { 'snippet_backward', 'fallback' },
     },
 
-    nerd_font_variant = 'mono',
+    appearance = { nerd_font_variant = 'mono' },
 
-    windows = {
-      autocomplete = {
-        winblend = vim.o.pumblend,
-      },
+    signature = { enabled = true },
+
+    snippets = {
+      expand = function(snippet) vim.snippet.expand(snippet) end,
+      active = function(filter) return vim.snippet.active(filter) end,
+      jump = function(direction) vim.snippet.jump(direction) end,
+    },
+
+    completion = {
+      accept = { auto_brackets = { enabled = true } },
       documentation = {
         auto_show = true,
+      },
+      menu = {
+        draw = {
+          treesitter = { "lsp" },
+        },
       },
     },
 
     sources = {
-      completion = {
-        enabled_providers = { 'lsp', 'path', 'snippets', 'buffer' },
-      },
+      -- Don't show cmdline completion
+      cmdline = {},
+      default = { 'lsp', 'path', 'snippets', 'buffer' },
     },
 
-    accept = { auto_brackets = { enabled = true } },
-    signature = { enabled = true },
   },
-  opts_extend = { 'sources.completion.enabled_providers' },
 }

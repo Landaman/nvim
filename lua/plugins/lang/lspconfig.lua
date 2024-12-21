@@ -9,151 +9,54 @@
 --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 --  - settings (table): Override the default settings passed when initializing the server.
 --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-local servers = {
-  clangd = {},
-  -- gopls = {},
-  basedpyright = {
-    settings = {
-      basedpyright = {
-        analysis = {
-          diagnosticMode = 'workspace',
-          typeCheckingMode = 'standard',
-          diagnosticSeverityOverrides = {
-            reportUnnecessaryComparison = 'warning',
-            reportUnnecessaryIsInstance = 'warning',
-            reportUnnecessaryCast = 'warning',
-            reportUnnecessaryContains = 'warning',
-            reportAssertAlwaysTrue = 'warning',
-          },
-        },
-      },
-    },
-  },
-  -- rust_analyzer = {},
-  -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-  --
-  cssls = {},
-  html = {},
-  svelte = {
-    capabilities = {
-      workspace = {
-        didChangeWatchedFiles = vim.fn.has 'nvim-0.10' == 0 and { dynamicRegistration = true },
-      },
-    },
-  },
-  jsonls = {
-    settings = {
-      json = {
-        format = {
-          enable = true,
-        },
-        validate = { enable = true },
-      },
-    },
-  },
-  eslint = {},
-  lua_ls = {
-    -- cmd = {...},
-    -- filetypes = { ...},
-    -- capabilities = {},
-    settings = {
-      Lua = {
-        completion = {
-          callSnippet = 'Disable',
-        },
-        hint = {
-          enable = true,
-        },
-        -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-        -- diagnostics = { disable = { 'missing-fields' } },
-      },
-    },
-  },
-  jdtls = nil,
-  vtsls = {
-    settings = {
-      complete_function_calls = true,
-      vtsls = {
-        enableMoveToFileCodeAction = true,
-        autoUseWorkspaceTsdk = true,
-        experimental = {
-          completion = {
-            enableServerSideFuzzyMatch = true,
-          },
-        },
-      },
-      typescript = {
-        updateImportsOnFileMove = { enabled = 'always' },
-        suggest = {
-          completeFunctionCalls = true,
-        },
-        inlayHints = {
-          enumMemberValues = { enabled = true },
-          functionLikeReturnTypes = { enabled = true },
-          parameterNames = { enabled = 'literals' },
-          parameterTypes = { enabled = true },
-          propertyDeclarationTypes = { enabled = true },
-          variableTypes = { enabled = false },
-        },
-      },
-    },
-  },
-}
 
 return {
-  {
-    -- `lazydev` configures Lua LSP for your Neovim config, runtime and pluginslspconf
-    -- used for completion, annotations and signatures of Neovim apis
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
-      },
-    },
-    dependencies = {
-      {
-        'saghen/blink.cmp',
-        opts = {
-          sources = {
-            completion = {
-              -- add lazydev to your completion providers
-              enabled_providers = { 'lazydev' },
-            },
-            providers = {
-              lsp = {
-                -- dont show LuaLS require statements when lazydev has items
-                fallback_for = { 'lazydev' },
-              },
-              lazydev = {
-                name = 'LazyDev',
-                module = 'lazydev.integrations.blink',
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-  { 'Bilal2453/luvit-meta', lazy = true },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'WhoIsSethDaniel/mason-tool-installer.nvim', opts = { ensure_installed = vim.tbl_keys(servers) } },
-      { 'williamboman/mason-lspconfig.nvim', config = true },
+      {
+        'williamboman/mason-lspconfig.nvim',
+        dependencies = {
+          'saghen/blink.cmp',
+          'williamboman/mason.nvim',
+        },
+        opts = {},
+        config = function(_, opts)
+          require('mason-lspconfig').setup(vim.tbl_deep_extend('force', opts, {
+            handlers = {
+              function(server_name)
+                -- Do nothing if no handler
+                if opts.handlers[server_name] == nil then
+                  return
+                -- Use handler in opts if we have it
+                elseif type(opts.handlers[server_name]) == 'function' then
+                  -- Try to see if this is just setup before the handler
+                  local result = opts.handlers[server_name]()
+                  if not result then
+                    return -- If nothing, we can assume this is done
+                  end
+                end
+
+                -- If we got a result or we have a base handler then try setup
+                if result or opts.handlers[server_name] ~= nil then
+                  local server = result or opts.handlers[server_name]
+
+                  -- Extend capabilities with blink
+                  server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
+                  require('lspconfig')[server_name].setup(server)
+                end
+              end,
+            },
+          }))
+        end,
+      },
 
       -- Useful status updates for LSP.
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
 
-      -- Allows extra capabilities provided by nvim-cmp
-      'saghen/blink.cmp',
-
-      -- Use telescope for extra actions, etc
       'nvim-telescope/telescope.nvim',
     },
     config = function()
@@ -259,19 +162,6 @@ return {
           end
         end,
       })
-
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            if servers[server_name] ~= nil then
-              local server = servers[server_name] or {}
-
-              server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
-              require('lspconfig')[server_name].setup(server)
-            end
-          end,
-        },
-      }
     end,
   },
 }
