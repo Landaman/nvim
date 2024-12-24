@@ -5,7 +5,21 @@ return {
     local f = vim.fn.expand '%:p'
     if vim.fn.isdirectory(f) ~= 0 then
       require 'oil' -- Disable lazy loading if we are loading straight into a directory
+      return -- No need for autocmd if we already loaded Oil
     end
+
+    local augroup = vim.api.nvim_create_augroup('Oil_lazy_hijack_netrw', { clear = true })
+    vim.api.nvim_create_autocmd('BufEnter', {
+      group = augroup,
+      desc = 'Start Oil when a directory is loaded',
+      callback = function()
+        local event_f = vim.fn.expand '%:p'
+        if vim.fn.isdirectory(event_f) ~= 0 then
+          require 'oil' -- Disable lazy loading if we are opening a directory and we haven't yet done oil
+          vim.api.nvim_del_augroup_by_id(augroup) -- No more need for this augroup if we've loaded
+        end
+      end,
+    })
   end,
   keys = {
     {
@@ -313,6 +327,7 @@ return {
         git_status = new_git_status()
       end,
       watch_for_changes = true,
+      default_file_explorer = true,
       columns = {
         'icon',
         git_column,
