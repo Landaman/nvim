@@ -74,4 +74,5 @@ vim.opt.shortmess:append { I = true }
 
 -- Disable the ruler (e.g., location in file) to prevent FOUC on startup
 vim.opt.ruler = false
+
 -- vim: ts=2 sts=2 sw=2 et
