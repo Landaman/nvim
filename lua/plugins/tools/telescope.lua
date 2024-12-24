@@ -26,10 +26,8 @@ return {
     {
       '<leader>sf',
       function()
-        -- Try defering to git for files, if that fails, use find files normally
-        if not pcall(require('telescope.builtin').git_files, {
-          show_untracked = true,
-        }) then
+        -- Try deferring to git for files, if that fails, use find files normally
+        if not pcall(require('telescope.builtin').git_files, {}) then
           require('telescope.builtin').find_files {}
         end
       end,
@@ -201,7 +199,14 @@ return {
           },
         },
       },
-      -- pickers = {}
+      pickers = {
+        git_files = {
+          show_untracked = true,
+        },
+        colorscheme = {
+          enable_preview = true,
+        },
+      },
       extensions = {
         oil = {
           hidden = true,
