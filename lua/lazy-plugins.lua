@@ -26,6 +26,13 @@ require('lazy').setup({
     opts_extend = { 'ensure_installed' },
   },
   {
+    'neovim/nvim-lspconfig',
+    opts = {
+      setup_with_executable = {},
+    },
+    opts_extend = { 'setup_with_executable' },
+  },
+  {
     'williamboman/mason-lspconfig.nvim',
     opts = { ensure_installed = {}, handlers = {} },
     opts_extend = { 'ensure_installed' },

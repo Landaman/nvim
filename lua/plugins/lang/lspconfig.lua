@@ -1,53 +1,51 @@
--- LSP Plugins
+--- Base handler for setting up an LSP based on parameters from either Mason or base exec
+---@param server_name string the name of the server to setup
+---@param handlers table<string, function | table> handlers to setup with
+function base_handler(server_name, handlers)
+  -- Do nothing if no handler
+  if handlers[server_name] == nil then
+    return
+    -- Use handler in opts if we have it
+  elseif type(handlers[server_name]) == 'function' then
+    -- Try to see if this is just setup before the handler
+    local result = handlers[server_name]()
+    if not result then
+      return -- If nothing, we can assume this is done
+    end
+  end
 
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. Available keys are:
---  - cmd (table): Override the default command used to start the server
---  - filetypes (table): Override the default list of associated filetypes for the server
---  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
---  - settings (table): Override the default settings passed when initializing the server.
---        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+  -- If we got a result or we have a base handler then try setup
+  if result or handlers[server_name] ~= nil then
+    local server = result or handlers[server_name]
+
+    -- Extend capabilities with blink
+    server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
+    require('lspconfig')[server_name].setup(server)
+  end
+end
 
 return {
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
+    opts = {
+      handlers = {}, -- Setup handlers
+    },
     dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for Neovim
+      'saghen/blink.cmp',
       {
         'williamboman/mason-lspconfig.nvim',
         dependencies = {
           'saghen/blink.cmp',
           'williamboman/mason.nvim',
         },
-        opts = {},
+        opts = {}, -- This will be populated by handlers and ensure_installed in submodules
         config = function(_, opts)
           require('mason-lspconfig').setup(vim.tbl_deep_extend('force', opts, {
             handlers = {
               function(server_name)
-                -- Do nothing if no handler
-                if opts.handlers[server_name] == nil then
-                  return
-                -- Use handler in opts if we have it
-                elseif type(opts.handlers[server_name]) == 'function' then
-                  -- Try to see if this is just setup before the handler
-                  local result = opts.handlers[server_name]()
-                  if not result then
-                    return -- If nothing, we can assume this is done
-                  end
-                end
-
-                -- If we got a result or we have a base handler then try setup
-                if result or opts.handlers[server_name] ~= nil then
-                  local server = result or opts.handlers[server_name]
-
-                  -- Extend capabilities with blink
-                  server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
-                  require('lspconfig')[server_name].setup(server)
-                end
+                base_handler(server_name, opts.handlers)
               end,
             },
           }))
@@ -59,7 +57,7 @@ return {
 
       'nvim-telescope/telescope.nvim',
     },
-    config = function()
+    config = function(_, opts)
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -162,6 +160,21 @@ return {
           end
         end,
       })
+
+      -- Now load fallback plugins
+      local handlers = vim.tbl_extend(
+        'force',
+        require('lazy.core.plugin').values(require('lazy.core.config').plugins['mason-lspconfig.nvim'], 'opts', false).handlers,
+        opts.handlers
+      ) -- Merge handlers between mason and raw
+
+      -- Now setup each LSP that we deem should be setup this way
+      for _, lsp in ipairs(opts.setup_with_executable) do
+        -- If it's already setup with Mason, no need
+        if not require('mason-registry').is_installed(require('mason-lspconfig').get_mappings().lspconfig_to_mason[lsp]) and vim.fn.executable(lsp) == 1 then
+          base_handler(lsp, handlers)
+        end
+      end
     end,
   },
 }

@@ -1,5 +1,11 @@
 return {
   {
+    'neovim/nvim-lspconfig',
+    opts = {
+      setup_with_executable = { 'clangd' },
+    },
+  },
+  {
     'williamboman/mason-lspconfig.nvim',
     opts = {
       ensure_installed = { 'clangd' },
