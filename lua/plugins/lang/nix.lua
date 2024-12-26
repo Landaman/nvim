@@ -12,7 +12,23 @@ return {
     opts = {
       setup_with_executable = { 'nixd' },
       handlers = {
-        nixd = {},
+        nixd = {
+          settings = {
+            nixd = {
+              nixpkgs = {
+                expr = 'import <nixpkgs> { }',
+              },
+              formatting = {
+                command = { 'nixfmt' },
+              },
+              options = {
+                home_manager = {
+                  expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
+                },
+              },
+            },
+          },
+        },
       },
     },
   },
