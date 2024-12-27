@@ -22,8 +22,8 @@ return {
                 command = { 'nixfmt' },
               },
               options = {
-                home_manager = {
-                  expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
+                ['nix-darwin'] = {
+                  expr = '(builtins.getFlake (builtins.toString <flakepath>)).darwinConfigurations.Ians-MacBook-Pro-12928.options',
                 },
               },
             },
