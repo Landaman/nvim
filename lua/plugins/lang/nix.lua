@@ -25,6 +25,9 @@ return {
                 ['nix-darwin'] = {
                   expr = '(builtins.getFlake (builtins.toString <flakepath>)).editorDarwinConfiguration.options',
                 },
+                ['home-manager'] = {
+                  expr = '(builtins.getFlake (builtins.toString <flakepath>)).editorHomeManagerConfiguration.options',
+                },
               },
             },
           },

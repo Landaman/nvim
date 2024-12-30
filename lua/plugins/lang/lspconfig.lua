@@ -171,8 +171,12 @@ return {
       -- Now setup each LSP that we deem should be setup this way
       for _, lsp in ipairs(opts.setup_with_executable) do
         -- If it's already setup with Mason, no need
-        if not require('mason-registry').is_installed(require('mason-lspconfig').get_mappings().lspconfig_to_mason[lsp]) and vim.fn.executable(lsp) == 1 then
-          base_handler(lsp, handlers)
+        if not require('mason-registry').is_installed(require('mason-lspconfig').get_mappings().lspconfig_to_mason[lsp]) then
+          if vim.fn.executable(lsp) == 1 then
+            base_handler(lsp, handlers)
+          else
+            vim.notify('lspconfig: Failed to find executable for LSP ' .. lsp, vim.log.levels.WARN)
+          end
         end
       end
     end,
