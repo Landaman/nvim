@@ -15,9 +15,6 @@ return {
         nixd = {
           settings = {
             nixd = {
-              nixpkgs = {
-                expr = '(builtins.getFlake (builtins.toString <flakepath>)).inputs.nixpkgs',
-              },
               formatting = {
                 command = { 'nixfmt' },
               },
