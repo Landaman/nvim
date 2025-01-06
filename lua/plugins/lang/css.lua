@@ -1,5 +1,12 @@
 return {
   {
+
+    'williamboman/mason.nvim',
+    opts = {
+      ensure_installed = { 'tailwindcss-language-server' },
+    },
+  },
+  {
     'williamboman/mason-lspconfig.nvim',
     opts = {
       ensure_installed = { 'cssls' },
