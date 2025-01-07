@@ -89,6 +89,8 @@ return {
     })
 
     require('oil').setup(opts)
+
+    require('oil.columns').register('git', opts.git_column)
   end,
   opts = function()
     -- Create HL groups for Oil Git
@@ -252,8 +254,7 @@ return {
     end
 
     local git_column = {
-      name = 'git_status',
-      callback = function(entry, bufnr)
+      render = function(entry, bufnr)
         local dir = require('oil').get_current_dir(bufnr)
         local entry_name = entry[2]
 
@@ -326,11 +327,12 @@ return {
       refresh_git_status = function()
         git_status = new_git_status()
       end,
+      git_column = git_column,
       watch_for_changes = true,
       default_file_explorer = true,
       columns = {
         'icon',
-        git_column,
+        'git',
       },
       constrain_cursor = 'name', -- Do not allow editing details when those are shown
       view_options = {
@@ -457,10 +459,10 @@ return {
                   'mtime',
                   highlight = 'OilHidden',
                 },
-                git_column,
+                'git',
               }
             else
-              require('oil').set_columns { 'icon', git_column }
+              require('oil').set_columns { 'icon', 'git' }
             end
           end,
         },
