@@ -11,6 +11,9 @@ return {
       -- hide the statusline on the starter page
       vim.o.laststatus = 0
     end
+
+    -- Disable the ruler (e.g., location in file) to prevent FOUC on startup
+    vim.opt.ruler = false
   end,
   opts = function()
     -- PERF: we don't need this lualine require madness 🤷

@@ -4,6 +4,29 @@ return {
   lazy = false,
   opts = {
     bigfile = { enabled = true },
+    dashboard = {
+      enabled = true,
+      preset = {
+        header = 'Neovim v' .. vim.version().major .. '.' .. vim.version().minor .. '.' .. vim.version().patch,
+        keys = {
+          { icon = ' ', key = 'f', desc = 'Find File', action = '<leader>sf' },
+          { icon = ' ', key = 'F', desc = 'Find Directory', action = '<leader>sF' },
+          { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
+          { icon = ' ', key = 'g', desc = 'Find Text', action = '<leader>sg' },
+          {
+            icon = ' ',
+            key = 'c',
+            desc = 'Config',
+            action = function()
+              vim.cmd('cd ' .. vim.fn.stdpath 'config')
+              Snacks.dashboard.pick('files', { cwd = vim.fn.stdpath 'config' })
+            end,
+          },
+          { icon = '󰒲 ', key = 'a', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy },
+          { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
+        },
+      },
+    },
     notifier = { enabled = true, timeout = 3000 },
     quickfile = { enabled = true },
     statuscolumn = { enabled = true },
@@ -58,6 +81,9 @@ return {
     vim.print = function(...)
       Snacks.debug.inspect(...)
     end
+
+    -- Disable the default message, to prevent FOUC on startup
+    vim.opt.shortmess:append { I = true }
   end,
   keys = {
     {

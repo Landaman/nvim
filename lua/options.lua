@@ -69,10 +69,4 @@ vim.opt.softtabstop = 4
 -- Disable text wrapping
 vim.opt.wrap = false
 
--- Disable the default message, to prevent FOUC on startup
-vim.opt.shortmess:append { I = true }
-
--- Disable the ruler (e.g., location in file) to prevent FOUC on startup
-vim.opt.ruler = false
-
 -- vim: ts=2 sts=2 sw=2 et
