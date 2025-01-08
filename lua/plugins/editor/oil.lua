@@ -1,5 +1,5 @@
 return {
-  'landaman/oil.nvim',
+  'stevearc/oil.nvim',
   cmd = { 'Oil' },
   init = function()
     local f = vim.fn.expand '%:p'
