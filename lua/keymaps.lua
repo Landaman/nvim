@@ -12,6 +12,9 @@ end, { desc = 'Delete current buffer' })
 vim.keymap.set('n', '<leader>fw', function()
   vim.cmd 'w'
 end, { desc = 'Write current buffer' })
+vim.keymap.set('n', '<leader>fW', function()
+  vim.cmd 'noautocmd w'
+end, { desc = 'Write current buffer without formatting' })
 
 -- Buffer navigation
 vim.keymap.set('n', '[f', '<CMD>bprevious<CR>', { desc = 'Previous buffer' })
