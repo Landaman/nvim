@@ -27,10 +27,8 @@ return {
         },
       },
     },
-    notifier = { enabled = true, timeout = 3000 },
     quickfile = { enabled = true },
     statuscolumn = { enabled = true },
-    input = { enabled = true },
     words = { enabled = true },
     scratch = { enabled = true },
     scope = {
@@ -71,29 +69,11 @@ return {
         },
       },
     },
-    styles = {
-      notification = {
-        wo = { wrap = true }, -- Wrap notifications
-      },
-    },
   },
   init = function()
-    vim.print = function(...)
-      Snacks.debug.inspect(...)
-    end
-
     -- Disable the default message, to prevent FOUC on startup
     vim.opt.shortmess:append { I = true }
   end,
-  keys = {
-    {
-      '<leader>n',
-      function()
-        Snacks.notifier.hide()
-      end,
-      desc = 'Dismiss notifications',
-    },
-  },
   config = function(_, opts)
     -- Setup scratch commands
     vim.api.nvim_create_user_command('Scratch', function(cmd_opts)
@@ -113,10 +93,6 @@ return {
         return { 'select', 'toggle' }
       end,
     })
-    local notify = vim.notify
     require('snacks').setup(opts)
-    -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
-    -- this is needed to have early notifications show up in noice history
-    vim.notify = notify
   end,
 }
