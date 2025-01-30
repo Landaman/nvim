@@ -24,9 +24,15 @@ return {
     signature = { enabled = true },
 
     snippets = {
-      expand = function(snippet) vim.snippet.expand(snippet) end,
-      active = function(filter) return vim.snippet.active(filter) end,
-      jump = function(direction) vim.snippet.jump(direction) end,
+      expand = function(snippet)
+        vim.snippet.expand(snippet)
+      end,
+      active = function(filter)
+        return vim.snippet.active(filter)
+      end,
+      jump = function(direction)
+        vim.snippet.jump(direction)
+      end,
     },
 
     completion = {
@@ -36,7 +42,7 @@ return {
       },
       menu = {
         draw = {
-          treesitter = { "lsp" },
+          treesitter = { 'lsp' },
         },
       },
     },
@@ -46,6 +52,5 @@ return {
       cmdline = {},
       default = { 'lsp', 'path', 'snippets', 'buffer' },
     },
-
   },
 }
