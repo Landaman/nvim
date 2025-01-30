@@ -36,34 +36,17 @@ return {
       keys = {
         textobject = {
           ii = {
-            min_size = 2, -- minimum size of the scope
-            edge = false, -- inner scope
-            cursor = false,
-            treesitter = { blocks = { enabled = false } },
             desc = 'Inner scope',
           },
           ai = {
-            cursor = false,
-            min_size = 2, -- minimum size of the scope
-            treesitter = { blocks = { enabled = false } },
             desc = 'Full scope',
           },
         },
         jump = {
           ['[i'] = {
-            min_size = 1, -- allow single line scopes
-            bottom = false,
-            cursor = false,
-            edge = true,
-            treesitter = { blocks = { enabled = false } },
             desc = 'Top edge of scope',
           },
           [']i'] = {
-            min_size = 1, -- allow single line scopes
-            bottom = true,
-            cursor = false,
-            edge = true,
-            treesitter = { blocks = { enabled = false } },
             desc = 'Bottom edge of scope',
           },
         },
@@ -94,5 +77,12 @@ return {
       end,
     })
     require('snacks').setup(opts)
+
+    -- Override jump to make a mark in the jumplist prior to jumping
+    local old_jump = require('snacks.scope').jump
+    require('snacks.scope').jump = function(...)
+      vim.cmd.normal "m'"
+      old_jump(...)
+    end
   end,
 }
