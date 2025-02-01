@@ -63,7 +63,7 @@ M.get_dirs = function(opts)
     vim.notify('telescope-oil: You need to install either find or fd/fdfind', vim.log.levels.ERROR)
   end
 
-  local getPreviewer = function()
+  local get_previewer = function()
     if opts.show_preview then
       return previewers.new_buffer_previewer {
         define_preview = function(self, _, _)
@@ -118,7 +118,7 @@ M.get_dirs = function(opts)
           .new(opts, {
             prompt_title = 'Directories',
             finder = finders.new_table { results = data, entry_maker = make_entry.gen_from_file(opts) },
-            previewer = getPreviewer(),
+            previewer = get_previewer(),
             sorter = conf.file_sorter(opts),
             attach_mappings = function(prompt_bufnr)
               action_set.select_default:replace(function()

@@ -254,7 +254,7 @@ return {
     end
 
     local git_column = {
-      render = function(entry, bufnr)
+      render = function(entry, _, bufnr)
         local dir = require('oil').get_current_dir(bufnr)
         local entry_name = entry[2]
 
