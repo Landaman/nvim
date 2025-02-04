@@ -7,7 +7,6 @@ return {
         eslint = {},
         vtsls = {
           settings = {
-            complete_function_calls = true,
             vtsls = {
               enableMoveToFileCodeAction = true,
               autoUseWorkspaceTsdk = true,
@@ -19,9 +18,6 @@ return {
             },
             typescript = {
               updateImportsOnFileMove = { enabled = 'always' },
-              suggest = {
-                completeFunctionCalls = true,
-              },
               inlayHints = {
                 enumMemberValues = { enabled = true },
                 functionLikeReturnTypes = { enabled = true },
@@ -45,7 +41,7 @@ return {
     opts = function()
       local dap = require 'dap'
 
-      pcall(require, 'mason')                                           -- make sure Mason is loaded
+      pcall(require, 'mason') -- make sure Mason is loaded
       local root = vim.env.MASON or (vim.fn.stdpath 'data' .. '/mason') -- Base path for the debug adapter
 
       -- Node options
