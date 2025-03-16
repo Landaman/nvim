@@ -9,21 +9,6 @@ return {
     cmd = 'Gitsigns',
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     opts = {
-      signs = {
-        add = { text = '▎' },
-        change = { text = '▎' },
-        delete = { text = '' },
-        topdelete = { text = '' },
-        changedelete = { text = '▎' },
-        untracked = { text = '▎' },
-      },
-      signs_staged = {
-        add = { text = '▎' },
-        change = { text = '▎' },
-        delete = { text = '' },
-        topdelete = { text = '' },
-        changedelete = { text = '▎' },
-      },
       on_attach = function(bufnr)
         local gitsigns = require 'gitsigns'
 
@@ -54,15 +39,14 @@ return {
         -- visual mode
         map('v', '<leader>hs', function()
           gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, { desc = 'Stage git hunk' })
+        end, { desc = 'Stage git hunk toggle' })
         map('v', '<leader>hr', function()
           gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
         end, { desc = 'Reset git hunk' })
         -- normal mode
-        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'Git stage hunk' })
+        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'Git stage hunk toggle' })
         map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'Git reset hunk' })
         map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'Git stage buffer' })
-        map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'Git undo stage hunk' })
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'Git reset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'Git preview hunk' })
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'Git blame line' })
@@ -72,7 +56,7 @@ return {
         end, { desc = 'Git diff against last commit' })
         -- Toggles
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = 'Toggle git show blame line' })
-        map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = 'Toggle git show deleted' })
+        map('n', '<leader>tp', gitsigns.preview_hunk_inline, { desc = 'Toggle git inline hunk preview' })
       end,
     },
   },
