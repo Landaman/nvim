@@ -47,9 +47,11 @@ return {
       },
     },
 
+    cmdline = {
+      enabled = false,
+    },
+
     sources = {
-      -- Don't show cmdline completion
-      cmdline = {},
       default = { 'lsp', 'path', 'snippets', 'buffer' },
     },
   },
