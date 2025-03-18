@@ -2,7 +2,7 @@
 return {
   {
     'folke/todo-comments.nvim',
-    cmd = { 'TodoTrouble', 'TodoTelescope' },
+    cmd = { 'TodoTrouble', 'TodoFzfLua' },
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
@@ -19,7 +19,7 @@ return {
       },
       {
         '<leader>so',
-        '<cmd>TodoTelescope<cr>',
+        '<cmd>TodoFzfLua<cr>',
         desc = 'Search todo',
       },
     },

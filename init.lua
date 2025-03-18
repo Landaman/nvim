@@ -101,7 +101,6 @@ vim.g.file_visibility = {
     },
     folders = {
       'node%_modules',
-      '%.git',
       '%.venv',
       '%_%_pycache%_%_',
       '%.metals',
