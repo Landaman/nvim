@@ -130,6 +130,12 @@ return {
   opts = {
     { 'fzf-tmux' },
   },
+  init = function()
+    vim.ui.select = function(...)
+      require('fzf-lua').register_ui_select()
+      vim.ui.select(...)
+    end
+  end,
   config = function(_, opts)
     -- This mess replaces the exec function with a helper
     -- that will replace fd calls with fdi calls when possible
