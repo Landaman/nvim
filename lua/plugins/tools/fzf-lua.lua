@@ -65,7 +65,7 @@ return {
         require('fzf-lua').files {
           fd_opts = [[--color=never --hidden --type d --exclude .git]],
           previewer = false,
-          preview = 'fd . {2} -u',
+          preview = 'cd {2} && fd . -u --max-depth=1',
         }
       end,
       desc = 'Search directories',
