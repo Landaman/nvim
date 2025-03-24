@@ -154,7 +154,9 @@ require 'lazy-bootstrap'
 require 'lazy-plugins'
 
 -- Load colorscheme
-vim.cmd.colorscheme 'catppuccin-mocha'
+if not vim.g.vscode then
+  vim.cmd.colorscheme 'catppuccin-mocha'
+end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -26,6 +26,7 @@ return {
   },
   {
     'luckasRanarison/tailwind-tools.nvim',
+    cond = not vim.g.vscode,
     ft = {
       'html',
       'css',

@@ -6,8 +6,6 @@ vim.g.diagnostic_signs = {
   [vim.diagnostic.severity.HINT] = '󰌵 ',
 }
 
-vim.keymap.set({ 'n' }, '<leader>pd', vim.diagnostic.open_float, { desc = 'Peek diagnostics' }) -- This can be used to peek the diagnostic for something that is hidden (see below)
-
 local diagnostic_goto = function(next, severity)
   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
   severity = severity and vim.diagnostic.severity[severity] or nil
@@ -15,12 +13,16 @@ local diagnostic_goto = function(next, severity)
     go { severity = severity }
   end
 end
-vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next diagnostic' })
-vim.keymap.set('n', '[d', diagnostic_goto(false), { desc = 'Prev diagnostic' })
-vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next error' })
-vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Previous error' })
-vim.keymap.set('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next warning' })
-vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Previous warning' })
+
+if not vim.g.vscode then
+  vim.keymap.set({ 'n' }, '<leader>pd', vim.diagnostic.open_float, { desc = 'Peek diagnostics' }) -- This can be used to peek the diagnostic for something that is hidden (see below)
+  vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next diagnostic' })
+  vim.keymap.set('n', '[d', diagnostic_goto(false), { desc = 'Prev diagnostic' })
+  vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next error' })
+  vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Previous error' })
+  vim.keymap.set('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next warning' })
+  vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Previous warning' })
+end
 
 vim.diagnostic.config {
   severity_sort = true,

@@ -1,11 +1,12 @@
 return {
   'stevearc/oil.nvim',
   cmd = { 'Oil' },
+  cond = not vim.g.vscode,
   init = function()
     local f = vim.fn.expand '%:p'
     if vim.fn.isdirectory(f) ~= 0 then
       require 'oil' -- Disable lazy loading if we are loading straight into a directory
-      return -- No need for autocmd if we already loaded Oil
+      return        -- No need for autocmd if we already loaded Oil
     end
 
     local augroup = vim.api.nvim_create_augroup('Oil_lazy_hijack_netrw', { clear = true })
@@ -15,7 +16,7 @@ return {
       callback = function()
         local event_f = vim.fn.expand '%:p'
         if vim.fn.isdirectory(event_f) ~= 0 then
-          require 'oil' -- Disable lazy loading if we are opening a directory and we haven't yet done oil
+          require 'oil'                           -- Disable lazy loading if we are opening a directory and we haven't yet done oil
           vim.api.nvim_del_augroup_by_id(augroup) -- No more need for this augroup if we've loaded
         end
       end,
@@ -138,13 +139,14 @@ return {
               ret[item_split[1]] = 'dir'
             end
           else
-            local status = line_split[1]:sub(1, 1) -- Status. Trim out percentages, etc, we only want the first character
-            local item = #line_split == 2 and line_split[2] or line_split[3] -- The file. For M, etc the 2nd one is the real path so respect that
+            local status = line_split[1]:sub(1, 1)                           -- Status. Trim out percentages, etc, we only want the first character
+            local item = #line_split == 2 and line_split[2] or
+            line_split[3]                                                    -- The file. For M, etc the 2nd one is the real path so respect that
 
-            local item_split = vim.split(item, '/') -- Split to the most basic path part, because sometimes diffs have multiple layers. Git always uses '/' so respect that
+            local item_split = vim.split(item, '/')                          -- Split to the most basic path part, because sometimes diffs have multiple layers. Git always uses '/' so respect that
 
-            if #item_split == 1 then -- This means the raw directory/file itself has changed, so keep status
-              ret[item_split[1]] = { -- This just removes the /, if there is one
+            if #item_split == 1 then                                         -- This means the raw directory/file itself has changed, so keep status
+              ret[item_split[1]] = {                                         -- This just removes the /, if there is one
                 status = status,
               }
             else -- Change status to M, because something in the folder was changed not the folder itself
@@ -160,7 +162,8 @@ return {
     local function new_git_status()
       return setmetatable({}, {
         __index = function(self, key)
-          local ignore_proc = vim.system({ 'git', 'ls-files', '--ignored', '--exclude-standard', '--others', '--directory' }, {
+          local ignore_proc = vim.system(
+          { 'git', 'ls-files', '--ignored', '--exclude-standard', '--others', '--directory' }, {
             cwd = key,
             text = true,
           })
@@ -168,7 +171,8 @@ return {
             cwd = key,
             text = true,
           })
-          local untracked_proc = vim.system({ 'git', 'ls-files', '--others', '--exclude-standard', '--directory', '--no-empty-directory' }, {
+          local untracked_proc = vim.system(
+          { 'git', 'ls-files', '--others', '--exclude-standard', '--directory', '--no-empty-directory' }, {
             cwd = key,
             text = true,
           })
@@ -215,7 +219,7 @@ return {
       end, filter.folders)
       local files = filter.files
 
-      local joined = vim.list_extend(folders, files) -- Join the lists
+      local joined = vim.list_extend(folders, files)                         -- Join the lists
 
       return vim.iter(joined):map(vim.g.os_encode_path_separators):totable() -- Encode the path separators
     end
@@ -234,7 +238,7 @@ return {
       local full_path = path .. name
       local stat = vim.uv.fs_stat(full_path)
 
-      if stat.type == 'directory' then -- Should never be nil
+      if stat.type == 'directory' then                 -- Should never be nil
         full_path = full_path .. require('oil.fs').sep -- Ensure we keep files and directories separate
       end
 
@@ -454,7 +458,7 @@ return {
               require('oil').set_columns {
                 'icon',
                 { 'permissions', highlight = 'OilHidden' },
-                { 'size', highlight = 'OilHidden' },
+                { 'size',        highlight = 'OilHidden' },
                 {
                   'mtime',
                   highlight = 'OilHidden',

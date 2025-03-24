@@ -1,5 +1,6 @@
 return {
   'danymat/neogen',
+  cond = not vim.g.vscode,
   cmd = 'Neogen',
   keys = {
     {

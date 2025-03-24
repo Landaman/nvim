@@ -2,7 +2,7 @@ return {
   'saghen/blink.cmp',
   event = 'InsertEnter',
   dependencies = 'rafamadriz/friendly-snippets',
-
+  cond = not vim.g.vscode,
   -- use a release tag to download pre-built binaries
   version = 'v0.*',
   opts = {

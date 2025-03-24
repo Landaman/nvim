@@ -28,6 +28,7 @@ return {
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
+    cond = not vim.g.vscode,
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     opts = {
       handlers = {}, -- Setup handlers
@@ -164,7 +165,8 @@ return {
       -- Now load fallback plugins
       local handlers = vim.tbl_extend(
         'force',
-        require('lazy.core.plugin').values(require('lazy.core.config').plugins['mason-lspconfig.nvim'], 'opts', false).handlers,
+        require('lazy.core.plugin').values(require('lazy.core.config').plugins['mason-lspconfig.nvim'], 'opts', false)
+        .handlers,
         opts.handlers
       ) -- Merge handlers between mason and raw
 

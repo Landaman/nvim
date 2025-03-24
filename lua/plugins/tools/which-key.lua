@@ -17,6 +17,7 @@ return {
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VeryLazy',
+    cond = not vim.g.vscode,
     opts = {
       icons = {
         -- set icon mappings to true if you have a Nerd Font
@@ -25,7 +26,7 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = 'Code', mode = { 'n', 'x' } },
+        { '<leader>c', group = 'Code',     mode = { 'n', 'x' } },
         { '<leader>d', group = 'Document' },
         { '<leader>r', group = 'Rename' },
         { '<leader>s', group = 'Search' },

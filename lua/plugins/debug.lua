@@ -1,5 +1,6 @@
 return {
   'mfussenegger/nvim-dap',
+  cond = not vim.g.vscode,
   dependencies = {
     'nvim-lua/plenary.nvim',
     -- Creates a beautiful debugger UI

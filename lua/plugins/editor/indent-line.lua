@@ -6,5 +6,6 @@ return {
     -- See `:help ibl`
     main = 'ibl',
     opts = {},
+    cond = not vim.g.vscode,
   },
 }

@@ -29,13 +29,15 @@ function replace_builtin_pipe(maybe_builtin_pipe)
   end
 
   -- Re-encode the contents to be what it was except for the call
-  local final_command = string.gsub(maybe_builtin_pipe, '%.spawn%_stdio%(%b[]%,', '%.spawn%_stdio%(%[%=%=%[' .. base64_util.encode(final_spawn) .. '%]%=%=%]%,')
+  local final_command = string.gsub(maybe_builtin_pipe, '%.spawn%_stdio%(%b[]%,',
+    '%.spawn%_stdio%(%[%=%=%[' .. base64_util.encode(final_spawn) .. '%]%=%=%]%,')
   return final_command
 end
 
 return {
   'ibhagwan/fzf-lua',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
+  cond = not vim.g.vscode,
   cmd = 'FzfLua',
   keys = {
     {

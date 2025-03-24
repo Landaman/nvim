@@ -2,6 +2,7 @@
 return {
   {
     'folke/todo-comments.nvim',
+    cond = not vim.g.vscode,
     cmd = { 'TodoTrouble', 'TodoFzfLua' },
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     dependencies = { 'nvim-lua/plenary.nvim' },

@@ -1,6 +1,7 @@
 local function is_null_ls_formatting_enabled(bufnr)
   local file_type = vim.bo[bufnr].filetype
-  local generators = require('null-ls.generators').get_available(file_type, require('null-ls.methods').internal.FORMATTING)
+  local generators = require('null-ls.generators').get_available(file_type,
+    require('null-ls.methods').internal.FORMATTING)
   return #generators > 0
 end
 
@@ -16,6 +17,7 @@ end
 return {
   {
     'nvimtools/none-ls.nvim',
+    cond = not vim.g.vscode,
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     dependencies = {
       {
