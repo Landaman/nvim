@@ -1,10 +1,18 @@
+-- Support yarn pnp by using these if they exist
+local tsdkFolder = vim.fn.getcwd() .. '/.yarn/sdks/typescript/lib'
+local eslintFolder = vim.fn.getcwd() .. '/.yarn/sdks'
+
 return {
   {
     'williamboman/mason-lspconfig.nvim',
     opts = {
       ensure_installed = { 'eslint', 'vtsls' },
       handlers = {
-        eslint = {},
+        eslint = {
+          settings = {
+            nodePath = vim.fn.isdirectory(eslintFolder) == 1 and eslintFolder or nil,
+          },
+        },
         vtsls = {
           settings = {
             vtsls = {
@@ -17,6 +25,7 @@ return {
               },
             },
             typescript = {
+              tsdk = vim.fn.isdirectory(tsdkFolder) == 1 and tsdkFolder or nil,
               updateImportsOnFileMove = { enabled = 'always' },
               inlayHints = {
                 enumMemberValues = { enabled = true },
