@@ -29,8 +29,7 @@ function replace_builtin_pipe(maybe_builtin_pipe)
   end
 
   -- Re-encode the contents to be what it was except for the call
-  local final_command = string.gsub(maybe_builtin_pipe, '%.spawn%_stdio%(%b[]%,',
-    '%.spawn%_stdio%(%[%=%=%[' .. base64_util.encode(final_spawn) .. '%]%=%=%]%,')
+  local final_command = string.gsub(maybe_builtin_pipe, '%.spawn%_stdio%(%b[]%,', '%.spawn%_stdio%(%[%=%=%[' .. base64_util.encode(final_spawn) .. '%]%=%=%]%,')
   return final_command
 end
 
@@ -40,20 +39,6 @@ return {
   cond = not vim.g.vscode,
   cmd = 'FzfLua',
   keys = {
-    {
-      '<leader>s?',
-      function()
-        require('fzf-lua').helptags()
-      end,
-      desc = 'Search help',
-    },
-    {
-      '<leader>sk',
-      function()
-        require('fzf-lua').keymaps()
-      end,
-      desc = 'Search keymaps',
-    },
     {
       '<leader>sf',
       function()
