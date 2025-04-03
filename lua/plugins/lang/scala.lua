@@ -1,6 +1,7 @@
 return {
   {
     'scalameta/nvim-metals',
+    cond = not vim.g.vscode,
     dependencies = {
       'saghen/blink.cmp',
       'nvim-lua/plenary.nvim',

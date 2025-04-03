@@ -1,7 +1,6 @@
 local function is_null_ls_formatting_enabled(bufnr)
   local file_type = vim.bo[bufnr].filetype
-  local generators = require('null-ls.generators').get_available(file_type,
-    require('null-ls.methods').internal.FORMATTING)
+  local generators = require('null-ls.generators').get_available(file_type, require('null-ls.methods').internal.FORMATTING)
   return #generators > 0
 end
 
@@ -22,9 +21,6 @@ return {
     dependencies = {
       {
         'jay-babu/mason-null-ls.nvim',
-        dependencies = {
-          'williamboman/mason.nvim',
-        },
         opts = {
           handlers = {},
           automatic_installation = false,

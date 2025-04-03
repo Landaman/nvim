@@ -4,6 +4,7 @@ return {
     -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
     ft = 'lua',
+    cond = not vim.g.vscode,
     opts = {
       library = {
         -- Load luvit types when the `vim.uv` word is found

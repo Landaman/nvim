@@ -2,6 +2,7 @@ return {
   {
     'mfussenegger/nvim-jdtls',
     ft = { 'java' },
+    cond = not vim.g.vscode,
     dependencies = {
       'saghen/blink.cmp',
       {

@@ -1,11 +1,11 @@
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    cond = not vim.g.vscode,
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     dependencies = {
       {
         'nvim-treesitter/nvim-treesitter-context',
+        cond = not vim.g.vscode,
         opts = {
           enable = true,
           max_lines = 5,
@@ -63,7 +63,7 @@ return {
               },
             },
             lsp_interop = {
-              enable = true,
+              enable = not vim.g.vscode,
               border = 'none',
               floating_preview_opts = {},
               peek_definition_code = {

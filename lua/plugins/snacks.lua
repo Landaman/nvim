@@ -3,9 +3,9 @@ return {
   priority = 1000,
   lazy = false,
   opts = {
-    bigfile = { enabled = true },
+    bigfile = { enabled = not vim.g.vscode },
     dashboard = {
-      enabled = true,
+      enabled = not vim.g.vscode,
       preset = {
         header = 'Neovim v' .. vim.version().major .. '.' .. vim.version().minor .. '.' .. vim.version().patch,
         keys = {
@@ -27,10 +27,10 @@ return {
         },
       },
     },
-    quickfile = { enabled = true },
-    statuscolumn = { enabled = true },
-    words = { enabled = true },
-    scratch = { enabled = true },
+    quickfile = { enabled = not vim.g.vscode },
+    statuscolumn = { enabled = not vim.g.vscode },
+    words = { enabled = not vim.g.vscode },
+    scratch = { enabled = not vim.g.vscode },
     scope = {
       enabled = true,
       keys = {
@@ -59,23 +59,26 @@ return {
   end,
   config = function(_, opts)
     -- Setup scratch commands
-    vim.api.nvim_create_user_command('Scratch', function(cmd_opts)
-      local fargs = cmd_opts.fargs
-      if #fargs == 0 or fargs[1] == 'toggle' then
-        Snacks.scratch()
-        return
-      elseif fargs[1] == 'select' then
-        Snacks.scratch.select()
-        return
-      else
-        vim.notify('Unknown argument ' .. fargs[1], vim.log.levels.ERROR)
-      end
-    end, {
-      nargs = '?',
-      complete = function()
-        return { 'select', 'toggle' }
-      end,
-    })
+    if opts.scratch.enabled then
+      vim.api.nvim_create_user_command('Scratch', function(cmd_opts)
+        local fargs = cmd_opts.fargs
+        if #fargs == 0 or fargs[1] == 'toggle' then
+          Snacks.scratch()
+          return
+        elseif fargs[1] == 'select' then
+          Snacks.scratch.select()
+          return
+        else
+          vim.notify('Unknown argument ' .. fargs[1], vim.log.levels.ERROR)
+        end
+      end, {
+        nargs = '?',
+        complete = function()
+          return { 'select', 'toggle' }
+        end,
+      })
+    end
+
     require('snacks').setup(opts)
 
     -- Override jump to make a mark in the jumplist prior to jumping

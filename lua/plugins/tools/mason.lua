@@ -3,6 +3,7 @@ return {
     'williamboman/mason.nvim',
     cmd = { 'Mason', 'MasonInstall', 'MasonLog', 'MasonUpdate', 'MasonUninstall', 'MasonUninstallAll' },
     build = ':MasonUpdate',
+    cond = not vim.g.vscode,
     opts = { ensure_installed = {} }, -- This is required to ensure setup actually happens
     config = function(_, opts)
       require('mason').setup(opts)
@@ -26,6 +27,29 @@ return {
         end
       end)
     end,
+  },
+  {
+    'williamboman/mason-lspconfig.nvim',
+    cond = not vim.g.vscode,
+    dependencies = {
+      'williamboman/mason.nvim',
+    },
+  },
+  {
+
+    'jay-babu/mason-null-ls.nvim',
+    cond = not vim.g.vscode,
+    dependencies = {
+      'williamboman/mason.nvim',
+    },
+  },
+  {
+
+    'jay-babu/mason-nvim-dap.nvim',
+    cond = not vim.g.vscode,
+    dependencies = {
+      'williamboman/mason.nvim',
+    },
   },
 }
 

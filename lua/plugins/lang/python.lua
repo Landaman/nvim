@@ -2,6 +2,7 @@ return {
   {
     'mfussenegger/nvim-dap-python',
     ft = { 'python' },
+    cond = not vim.g.vscode,
     dependencies = {
       {
         'williamboman/mason.nvim',
