@@ -5,10 +5,6 @@
 vim.keymap.set('n', '<leader>fd', function()
   vim.g.close_buffer() -- Smart close buffer based on window
 end, { desc = 'Close current buffer' })
-vim.keymap.set('n', '<leader>fD', function()
-  vim.cmd 'bdelete' -- Close buffer and window
-end, { desc = 'Delete current buffer' })
-
 vim.keymap.set('n', '<leader>fw', function()
   vim.cmd 'w'
 end, { desc = 'Write current buffer' })
