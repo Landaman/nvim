@@ -55,52 +55,13 @@ return {
 
       -- Useful status updates for LSP.
       { 'j-hui/fidget.nvim', opts = {} },
-
-      'ibhagwan/fzf-lua',
     },
     config = function(_, opts)
-      vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-        callback = function(event)
-          local map = function(keys, func, desc, mode)
-            mode = mode or 'n'
-            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = desc })
-          end
-
-          map('gd', require('fzf-lua').lsp_definitions, 'Goto definition')
-
-          map('gr', require('fzf-lua').lsp_references, 'Goto references')
-
-          map('gI', require('fzf-lua').lsp_implementations, 'Goto implementation')
-
-          map('gy', require('fzf-lua').lsp_typedefs, 'Type definition')
-
-          map('<leader>ds', require('fzf-lua').lsp_document_symbols, 'Document symbols')
-
-          map('<leader>ws', require('fzf-lua').lsp_workspace_symbols, 'Workspace symbols')
-
-          map('<leader>rn', vim.lsp.buf.rename, 'Rename')
-
-          map('<leader>ca', vim.lsp.buf.code_action, 'Code action', { 'n', 'x' })
-
-          map('gD', vim.lsp.buf.declaration, 'Goto declaration')
-
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-            map(']]', function()
-              Snacks.words.jump(vim.v.count1)
-            end, 'Next reference', { 'n', 't' })
-            map('[[', function()
-              Snacks.words.jump(-vim.v.count1)
-            end, 'Previous reference', { 'n', 't' })
-          end
-        end,
-      })
-
       -- Now load fallback plugins
       local handlers = vim.tbl_extend(
         'force',
-        require('lazy.core.plugin').values(require('lazy.core.config').plugins['mason-lspconfig.nvim'], 'opts', false).handlers,
+        require('lazy.core.plugin').values(require('lazy.core.config').plugins['mason-lspconfig.nvim'], 'opts', false)
+        .handlers,
         opts.handlers
       ) -- Merge handlers between mason and raw
 

@@ -13,10 +13,7 @@ return {
     -- your own keymap.
     keymap = {
       preset = 'default',
-      ['<Tab>'] = {},
-      ['<S-Tab>'] = {},
-      ['<C-l>'] = { 'snippet_forward', 'fallback' },
-      ['<C-h>'] = { 'snippet_backward', 'fallback' },
+      ['<C-s>'] = { 'show_signature', 'hide_signature', 'fallback' }
     },
 
     appearance = { nerd_font_variant = 'mono' },

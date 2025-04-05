@@ -6,18 +6,17 @@ vim.g.diagnostic_signs = {
   [vim.diagnostic.severity.HINT] = '󰌵 ',
 }
 
+---@param next boolean
+---@param severity vim.diagnostic.Severity?
+---@return function
 local diagnostic_goto = function(next, severity)
-  local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
   severity = severity and vim.diagnostic.severity[severity] or nil
   return function()
-    go { severity = severity }
+    vim.diagnostic.jump { severity = severity, count = next and 1 or -1 }
   end
 end
 
 if not vim.g.vscode then
-  vim.keymap.set({ 'n' }, '<leader>pd', vim.diagnostic.open_float, { desc = 'Peek diagnostics' }) -- This can be used to peek the diagnostic for something that is hidden (see below)
-  vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next diagnostic' })
-  vim.keymap.set('n', '[d', diagnostic_goto(false), { desc = 'Prev diagnostic' })
   vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next error' })
   vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Previous error' })
   vim.keymap.set('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next warning' })

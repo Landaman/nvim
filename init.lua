@@ -130,10 +130,61 @@ vim.g.os_encode_path_separators = function(pattern)
   return result
 end
 
---- Closes the provided buffer, force closing it if it is not modifiable
----@param buf number?
-vim.g.close_buffer = function(buf)
-  Snacks.bufdelete(buf) -- Otherwise, preserve window layout
+-- Helper function to set opfuncs
+local op_func_id = 0
+vim.g.to_op = function(func)
+  op_func_id = op_func_id + 1
+  local op_func_name = '__kickstart_op_func_' .. tostring(op_func_id)
+  local operatorfunc = 'v:lua.' .. op_func_name
+
+  local op_func = function(motion)
+    local mode = vim.api.nvim_get_mode().mode
+    if not motion then
+      if mode == 'n' then
+        vim.go.operatorfunc = operatorfunc
+        return 'g@'
+      elseif mode ~= '\x16' and mode:lower() ~= 'v' then
+        return '<Ignore>'
+      end
+    end
+
+    local start_pos
+    local end_pos
+    if motion then
+      start_pos = vim.api.nvim_buf_get_mark(0, '[')
+      end_pos = vim.api.nvim_buf_get_mark(0, ']')
+    else
+      local a = vim.fn.getpos 'v'
+      local b = vim.fn.getpos '.'
+      start_pos = { a[2], a[3] - 1 }
+      end_pos = { b[2], b[3] - 1 }
+    end
+
+    if start_pos[1] > end_pos[1] or (start_pos[1] == end_pos[1] and start_pos[2] > end_pos[2]) then
+      start_pos, end_pos = end_pos, start_pos
+    end
+
+    local is_linewise = motion == 'line' or mode == 'V'
+    if is_linewise then
+      start_pos = { start_pos[1], 0 }
+      end_pos = { end_pos[1], #vim.fn.getline(end_pos[1]) }
+    end
+
+    local range = vim.lsp.util.make_given_range_params(start_pos, end_pos, 0, 'utf-16').range
+    local is_single_line = range.start.line == range['end'].line
+    local is_current_line = is_single_line and range.start.line == vim.fn.line '.' - 1
+    local ctx = {
+      range = range,
+      is_linewise = is_linewise,
+      is_single_line = is_single_line,
+      is_current_line = is_current_line,
+    }
+    func(ctx)
+    return '<Ignore>'
+  end
+
+  _G[op_func_name] = op_func
+  return _G[op_func_name]
 end
 
 vim.loader.enable() -- Enable the faster plugin loader

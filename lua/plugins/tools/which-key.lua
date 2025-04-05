@@ -26,15 +26,13 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = 'Code',     mode = { 'n', 'x' } },
+        { 'gr', group = 'LSP Actions' },
+        { '<leader>c', group = 'Code' },
         { '<leader>d', group = 'Document' },
-        { '<leader>r', group = 'Rename' },
         { '<leader>s', group = 'Search' },
         { '<leader>w', group = 'Workspace' },
         { '<leader>t', group = 'Toggle' },
-        { '<leader>p', group = 'Peek' },
         { '<leader>h', group = 'Git hunk', mode = { 'n', 'v' } },
-        { '<leader>f', group = 'Buffer' },
       },
     },
   },

@@ -5,12 +5,14 @@ local function is_null_ls_formatting_enabled(bufnr)
 end
 
 local function format_with_lsp(bufnr)
-  vim.lsp.buf.format {
-    filter = function(client)
-      return client.name == 'null-ls' or not is_null_ls_formatting_enabled(bufnr)
-    end,
-    bufnr = bufnr,
-  }
+  vim.schedule(function()
+    vim.lsp.buf.format {
+      filter = function(client)
+        return client.name == 'null-ls' or not is_null_ls_formatting_enabled(bufnr)
+      end,
+      bufnr = bufnr,
+    }
+  end)
 end
 
 return {
@@ -36,9 +38,14 @@ return {
       local null_ls = require 'null-ls'
       local cspell = require 'cspell'
 
-      vim.keymap.set({ 'n' }, '<leader>ff', function()
+      local format = vim.g.to_op(function()
         format_with_lsp(vim.api.nvim_get_current_buf())
-      end, { desc = 'Format buffer' })
+      end)
+
+      vim.keymap.set({ 'n', 'v' }, '=', format, { desc = 'Format range', expr = true })
+      vim.keymap.set({ 'n' }, '==', function()
+        return format() .. '_'
+      end, { desc = 'Format line', expr = true })
 
       local lsp_save_augroup = vim.api.nvim_create_augroup('LspSaveFormatting', {})
       null_ls.setup {

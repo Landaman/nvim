@@ -113,6 +113,62 @@ return {
       end,
       desc = 'Fuzzily search in current buffer',
     },
+    {
+      'grr',
+      function()
+        require('fzf-lua').lsp_references()
+      end,
+      desc = 'Search references',
+    },
+    {
+      'gri',
+      function()
+        require('fzf-lua').lsp_implementations()
+      end,
+      desc = 'Search implementations',
+    },
+    {
+      'gry',
+      function()
+        require('fzf-lua').lsp_typedefs()
+      end,
+      desc = 'Search type definitions',
+    },
+    {
+      'gra',
+      function()
+        require('fzf-lua').lsp_code_actions()
+      end,
+      desc = 'Code actions',
+    },
+    {
+      'gO',
+      function()
+        require('fzf-lua').lsp_document_symbols()
+      end,
+      desc = 'Search document symbols',
+    },
+    {
+      'g<C-o>',
+      function()
+        require('fzf-lua').lsp_workspace_symbols()
+      end,
+      desc = 'Search workspace symbols',
+    },
+    {
+      'gd',
+      function()
+        require('fzf-lua').lsp_definitions()
+      end,
+      desc = 'Search definitions',
+    },
+    {
+      'gD',
+      function()
+        require('fzf-lua').lsp_declarations()
+      end,
+      desc = 'Search declarations',
+    },
   },
   opts = {
     { 'fzf-tmux' },

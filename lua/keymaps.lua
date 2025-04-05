@@ -1,20 +1,11 @@
--- [[ Basic Keymaps ]]
---  See `:help vim.keymap.set()`
+-- Lsp keymaps
+vim.keymap.set('n', 'gry', vim.lsp.buf.type_definition, {
+  desc = 'vim.lsp.buf.type_definition()',
+})
 
--- Buffer read/close commands
-vim.keymap.set('n', '<leader>fd', function()
-  vim.g.close_buffer() -- Smart close buffer based on window
-end, { desc = 'Close current buffer' })
-vim.keymap.set('n', '<leader>fw', function()
-  vim.cmd 'w'
-end, { desc = 'Write current buffer' })
-vim.keymap.set('n', '<leader>fW', function()
-  vim.cmd 'noautocmd w'
-end, { desc = 'Write current buffer without formatting' })
-
--- Buffer navigation
-vim.keymap.set('n', '[f', '<CMD>bprevious<CR>', { desc = 'Previous buffer' })
-vim.keymap.set('n', ']f', '<CMD>bnext<CR>', { desc = 'Next buffer' })
+vim.keymap.set('n', 'g<C-o>', vim.lsp.buf.workspace_symbol, {
+  desc = 'vim.lsp.buf.workspace_symbol()',
+})
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
