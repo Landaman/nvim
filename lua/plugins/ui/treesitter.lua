@@ -66,10 +66,7 @@ return {
               enable = not vim.g.vscode,
               border = 'none',
               floating_preview_opts = {},
-              peek_definition_code = {
-                ['<leader>pm'] = { query = '@function.outer', desc = 'Peek outer function' },
-                ['<leader>pc'] = { query = '@class.outer', desc = 'Peek outer class' },
-              },
+              peek_definition_code = {},
             },
             move = {
               enable = true,
