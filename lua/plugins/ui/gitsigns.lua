@@ -3,6 +3,16 @@
 --    require('gitsigns').setup({ ... })
 --
 -- See `:help gitsigns` to understand what the configuration keys do
+
+if not vim.g.vscode then
+  vim.keymap.set('n', ']g', function()
+    require('vscode').call 'workbench.action.editor.nextChange'
+  end, { desc = 'Next change' })
+  vim.keymap.set('n', '[g', function()
+    require('vscode').call 'workbench.action.editor.prevChange'
+  end, { desc = 'Previous change' })
+end
+
 return {
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',

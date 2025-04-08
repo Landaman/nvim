@@ -54,8 +54,30 @@ return {
     },
   },
   keys = {
-    { "]]", function() Snacks.words.jump(vim.v.count1) end,  desc = "Next Reference", mode = { "n", "t" } },
-    { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+    {
+      ']]',
+      function()
+        if vim.g.vscode then
+          require('vscode').call 'editor.action.wordHighlight.next'
+        else
+          Snacks.words.jump(vim.v.count1)
+        end
+      end,
+      desc = 'Next reference',
+      mode = { 'n', 't' },
+    },
+    {
+      '[[',
+      function()
+        if vim.g.vscode then
+          require('vscode').call 'editor.action.wordHighlight.prev'
+        else
+          Snacks.words.jump(-vim.v.count1)
+        end
+      end,
+      desc = 'Previous reference',
+      mode = { 'n', 't' },
+    },
   },
   init = function()
     -- Disable the default message, to prevent FOUC on startup

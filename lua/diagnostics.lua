@@ -21,6 +21,13 @@ if not vim.g.vscode then
   vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Previous error' })
   vim.keymap.set('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next warning' })
   vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Previous warning' })
+else
+  vim.keymap.set('n', ']d', function()
+    require('vscode').call 'editor.action.marker.next'
+  end, { desc = 'Next diagnostic' })
+  vim.keymap.set('n', '[d', function()
+    require('vscode').call 'editor.action.marker.prev'
+  end, { desc = 'Previous diagnostic' })
 end
 
 vim.diagnostic.config {
