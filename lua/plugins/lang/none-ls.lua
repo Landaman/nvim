@@ -5,14 +5,12 @@ local function is_null_ls_formatting_enabled(bufnr)
 end
 
 local function format_with_lsp(bufnr)
-  vim.schedule(function()
-    vim.lsp.buf.format {
-      filter = function(client)
-        return client.name == 'null-ls' or not is_null_ls_formatting_enabled(bufnr)
-      end,
-      bufnr = bufnr,
-    }
-  end)
+  vim.lsp.buf.format {
+    filter = function(client)
+      return client.name == 'null-ls' or not is_null_ls_formatting_enabled(bufnr)
+    end,
+    bufnr = bufnr,
+  }
 end
 
 return {
@@ -39,10 +37,12 @@ return {
       local cspell = require 'cspell'
 
       local format = vim.g.to_op(function()
-        format_with_lsp(vim.api.nvim_get_current_buf())
+        vim.schedule(function()
+          format_with_lsp(vim.api.nvim_get_current_buf())
+        end)
       end)
 
-      vim.keymap.set({ 'n', 'v' }, '=', format, { desc = 'Format range', expr = true })
+      vim.keymap.set({ 'n', 'v' }, '=', format, { desc = 'format range', expr = true })
       vim.keymap.set({ 'n' }, '==', function()
         return format() .. '_'
       end, { desc = 'Format line', expr = true })
