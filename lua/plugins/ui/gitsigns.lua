@@ -4,7 +4,7 @@
 --
 -- See `:help gitsigns` to understand what the configuration keys do
 
-if not vim.g.vscode then
+if vim.g.vscode then
   vim.keymap.set('n', ']g', function()
     require('vscode').call 'workbench.action.editor.nextChange'
   end, { desc = 'Next change' })
