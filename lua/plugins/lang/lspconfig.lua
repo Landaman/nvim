@@ -43,6 +43,10 @@ return {
         },
         opts = {}, -- This will be populated by handlers and ensure_installed in submodules
         config = function(_, opts)
+          -- postgrestools are not natively supported, so add support manually here
+          require('mason-lspconfig.mappings.server').lspconfig_to_package['postgres_lsp'] = 'postgrestools'
+          require('mason-lspconfig.mappings.server').package_to_lspconfig['postgrestools'] = 'postgres_lsp'
+
           require('mason-lspconfig').setup(vim.tbl_deep_extend('force', opts, {
             handlers = {
               function(server_name)
@@ -60,8 +64,7 @@ return {
       -- Now load fallback plugins
       local handlers = vim.tbl_extend(
         'force',
-        require('lazy.core.plugin').values(require('lazy.core.config').plugins['mason-lspconfig.nvim'], 'opts', false)
-        .handlers,
+        require('lazy.core.plugin').values(require('lazy.core.config').plugins['mason-lspconfig.nvim'], 'opts', false).handlers,
         opts.handlers
       ) -- Merge handlers between mason and raw
 
