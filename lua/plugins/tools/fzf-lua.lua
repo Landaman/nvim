@@ -172,6 +172,11 @@ return {
   },
   opts = {
     { 'fzf-tmux' },
+    previewers = {
+      codeaction_native = {
+        pager = vim.fn.executable 'delta' and [[delta --width=$COLUMNS --hunk-header-style="omit" --file-style="omit"]] or nil,
+      },
+    },
   },
   init = function()
     vim.ui.select = function(...)
