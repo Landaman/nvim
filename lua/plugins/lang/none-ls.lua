@@ -26,15 +26,12 @@ return {
           automatic_installation = false,
           ensure_installed = {
             'markdownlint',
-            'cspell',
           },
         },
       },
-      'davidmh/cspell.nvim',
     },
     config = function()
       local null_ls = require 'null-ls'
-      local cspell = require 'cspell'
 
       local format = vim.g.to_op(function()
         vim.schedule(function()
@@ -61,22 +58,7 @@ return {
           })
         end,
 
-        sources = {
-          cspell.diagnostics.with {
-            -- info rather than errors
-            disabled_filetypes = { 'bigfile' },
-            diagnostics_postprocess = function(diagnostic)
-              diagnostic.severity = vim.diagnostic.severity.INFO
-            end,
-          },
-          cspell.code_actions.with {
-            -- info rather than errors
-            disabled_filetypes = { 'bigfile' },
-            diagnostics_postprocess = function(diagnostic)
-              diagnostic.severity = vim.diagnostic.severity.INFO
-            end,
-          },
-        },
+        sources = {},
       }
     end,
   },
