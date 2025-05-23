@@ -1,18 +1,3 @@
-local function is_null_ls_formatting_enabled(bufnr)
-  local file_type = vim.bo[bufnr].filetype
-  local generators = require('null-ls.generators').get_available(file_type, require('null-ls.methods').internal.FORMATTING)
-  return #generators > 0
-end
-
-local function format_with_lsp(bufnr)
-  vim.lsp.buf.format {
-    filter = function(client)
-      return client.name == 'null-ls' or not is_null_ls_formatting_enabled(bufnr)
-    end,
-    bufnr = bufnr,
-  }
-end
-
 return {
   {
     'nvimtools/none-ls.nvim',
@@ -33,31 +18,8 @@ return {
     config = function()
       local null_ls = require 'null-ls'
 
-      local format = vim.g.to_op(function()
-        vim.schedule(function()
-          format_with_lsp(vim.api.nvim_get_current_buf())
-        end)
-      end)
-
-      vim.keymap.set({ 'n', 'v' }, '=', format, { desc = 'format range', expr = true })
-      vim.keymap.set({ 'n' }, '==', function()
-        return format() .. '_'
-      end, { desc = 'Format line', expr = true })
-
-      local lsp_save_augroup = vim.api.nvim_create_augroup('LspSaveFormatting', {})
       null_ls.setup {
         update_in_insert = false,
-        on_attach = function(_, bufnr)
-          vim.api.nvim_clear_autocmds { group = lsp_save_augroup, buffer = bufnr }
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            group = lsp_save_augroup,
-            buffer = bufnr,
-            callback = function()
-              format_with_lsp(bufnr)
-            end,
-          })
-        end,
-
         sources = {},
       }
     end,

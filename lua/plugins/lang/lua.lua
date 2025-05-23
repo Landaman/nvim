@@ -57,8 +57,17 @@ return {
     },
   },
   {
-    'jay-babu/mason-null-ls.nvim',
-    opts = { ensure_installed = { 'stylua' } },
+    'stevearc/conform.nvim',
+    dependencies = {
+      {
+
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'stylua' },
+        },
+      },
+    },
+    opts = { formatters_by_ft = { lua = { 'stylua' } } },
   },
   {
     'nvim-treesitter/nvim-treesitter',

@@ -25,8 +25,22 @@ return {
     },
   },
   {
-    'jay-babu/mason-null-ls.nvim',
-    opts = { ensure_installed = { 'black' } },
+    'stevearc/conform.nvim',
+    dependencies = {
+      {
+
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'black' },
+        },
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        python = { 'black' },
+        htmldjango = { 'prettierd' },
+      },
+    },
   },
   {
     'mfussenegger/nvim-dap',

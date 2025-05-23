@@ -1,14 +1,5 @@
 return {
   {
-    'williamboman/mason-lspconfig.nvim',
-    opts = {
-      ensure_installed = { 'html' },
-      handlers = {
-        html = {},
-      },
-    },
-  },
-  {
     'stevearc/conform.nvim',
     dependencies = {
       {
@@ -21,7 +12,7 @@ return {
     },
     opts = {
       formatters_by_ft = {
-        html = { 'prettierd' },
+        yaml = { 'prettierd' },
       },
     },
   },
@@ -29,7 +20,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     opts = {
       ensure_installed = {
-        'html',
+        'yaml',
       },
     },
   },
