@@ -3,7 +3,7 @@ vim.keymap.set('n', 'gry', vim.lsp.buf.type_definition, {
   desc = 'vim.lsp.buf.type_definition()',
 })
 
-vim.keymap.set('n', 'g<C-o>', vim.lsp.buf.workspace_symbol, {
+vim.keymap.set('n', 'gP', vim.lsp.buf.workspace_symbol, {
   desc = 'vim.lsp.buf.workspace_symbol()',
 })
 

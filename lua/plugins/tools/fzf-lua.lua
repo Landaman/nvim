@@ -149,7 +149,7 @@ return {
       desc = 'Search document symbols',
     },
     {
-      'g<C-o>',
+      'gP',
       function()
         require('fzf-lua').lsp_workspace_symbols()
       end,
