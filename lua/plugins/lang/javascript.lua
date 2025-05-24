@@ -4,10 +4,17 @@ local eslintFolder = vim.fn.getcwd() .. '/.yarn/sdks'
 
 return {
   {
-    'williamboman/mason-lspconfig.nvim',
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'eslint-lsp', 'vtsls' },
+        },
+      },
+    },
     opts = {
-      ensure_installed = { 'eslint', 'vtsls' },
-      handlers = {
+      config = {
         eslint = {
           settings = {
             nodePath = vim.fn.isdirectory(eslintFolder) == 1 and eslintFolder or nil,

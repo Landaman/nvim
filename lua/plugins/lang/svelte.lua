@@ -1,9 +1,16 @@
 return {
   {
-    'williamboman/mason-lspconfig.nvim',
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/mason.nvim',
+      opts = {
+        ensure_installed = {
+          'svelte-language-server',
+        },
+      },
+    },
     opts = {
-      ensure_installed = { 'svelte' },
-      handlers = {
+      config = {
         svelte = {
           capabilities = {
             workspace = {

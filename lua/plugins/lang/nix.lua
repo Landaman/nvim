@@ -11,7 +11,7 @@ return {
     'neovim/nvim-lspconfig',
     opts = {
       setup_with_executable = { 'nixd' },
-      handlers = {
+      config = {
         nixd = {
           settings = {
             nixd = {

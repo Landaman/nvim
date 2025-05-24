@@ -12,7 +12,7 @@ return {
       },
     },
     config = function()
-      local python = require('mason-registry').get_package('debugpy'):get_install_path() .. '/venv/bin/python'
+      local python = vim.fn.expand '$MASON/packages/debugpy/venv/bin/python'
       require('dap-python').setup(python)
     end,
   },
@@ -54,10 +54,17 @@ return {
     },
   },
   {
-    'williamboman/mason-lspconfig.nvim',
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'basedpyright' },
+        },
+      },
+    },
     opts = {
-      ensure_installed = { 'basedpyright' },
-      handlers = {
+      config = {
         basedpyright = {
           settings = {
             basedpyright = {

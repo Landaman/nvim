@@ -34,11 +34,6 @@ require('lazy').setup({
     opts_extend = { 'setup_with_executable', 'keymaps' },
   },
   {
-    'williamboman/mason-lspconfig.nvim',
-    opts = { ensure_installed = {}, handlers = {} },
-    opts_extend = { 'ensure_installed' },
-  },
-  {
     'jay-babu/mason-nvim-dap.nvim',
     opts = { ensure_installed = {} },
     opts_extend = { 'ensure_installed' },

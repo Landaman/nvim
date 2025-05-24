@@ -1,9 +1,16 @@
 return {
   {
-    'williamboman/mason-lspconfig.nvim',
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/mason.nvim',
+      opts = {
+        ensure_installed = {
+          'html-lsp',
+        },
+      },
+    },
     opts = {
-      ensure_installed = { 'html' },
-      handlers = {
+      config = {
         html = {},
       },
     },

@@ -1,9 +1,16 @@
 return {
   {
-    'williamboman/mason-lspconfig.nvim',
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'json-lsp' },
+        },
+      },
+    },
     opts = {
-      ensure_installed = { 'jsonls' },
-      handlers = {
+      config = {
         jsonls = {
           settings = {
             json = {

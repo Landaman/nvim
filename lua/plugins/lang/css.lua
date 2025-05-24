@@ -7,10 +7,15 @@ return {
     },
   },
   {
-    'williamboman/mason-lspconfig.nvim',
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/mason.nvim',
+      opts = {
+        ensure_installed = { 'css-lsp' },
+      },
+    },
     opts = {
-      ensure_installed = { 'cssls' },
-      handlers = {
+      config = {
         cssls = {},
       },
     },

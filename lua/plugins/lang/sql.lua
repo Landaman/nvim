@@ -1,9 +1,16 @@
 return {
   {
-    'williamboman/mason-lspconfig.nvim',
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'prisma-language-server', 'postgrestools' },
+        },
+      },
+    },
     opts = {
-      ensure_installed = { 'prismals', 'postgres_lsp' },
-      handlers = {
+      config = {
         prismals = {},
         postgres_lsp = {},
       },

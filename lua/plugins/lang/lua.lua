@@ -32,10 +32,17 @@ return {
     },
   },
   {
-    'williamboman/mason-lspconfig.nvim',
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'lua-language-server' },
+        },
+      },
+    },
     opts = {
-      ensure_installed = { 'lua_ls' },
-      handlers = {
+      config = {
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},

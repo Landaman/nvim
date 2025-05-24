@@ -1,9 +1,16 @@
 return {
   {
-    'williamboman/mason-lspconfig.nvim',
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'docker-compose-language-service', 'dockerfile-language-server' },
+        },
+      },
+    },
     opts = {
-      ensure_installed = { 'dockerls', 'docker_compose_language_service' },
-      handlers = {
+      config = {
         dockerls = {},
         docker_compose_language_service = {},
       },

@@ -6,7 +6,7 @@ return {
     dependencies = {
       'saghen/blink.cmp',
       {
-        -- DON'T install via mason-lspconfig because we don't want that to set this up
+        -- DON'T setup via lspconfig because this plugin will handle that for us
         'williamboman/mason.nvim',
         opts = {
           ensure_installed = {
@@ -17,8 +17,7 @@ return {
       },
     },
     opts = function()
-      local mason_registry = require 'mason-registry'
-      local lombok_jar = mason_registry.get_package('jdtls'):get_install_path() .. '/lombok.jar'
+      local lombok_jar = vim.fn.expand '$MASON/share/jdtls/lombok.jar'
       return {
         -- How to find the root dir for a given filename. The default comes from
         -- lspconfig which provides a function specifically for java projects.
