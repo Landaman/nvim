@@ -1,12 +1,5 @@
 return {
   {
-
-    'williamboman/mason.nvim',
-    opts = {
-      ensure_installed = { 'tailwindcss-language-server' },
-    },
-  },
-  {
     'neovim/nvim-lspconfig',
     dependencies = {
       'williamboman/mason.nvim',
@@ -73,6 +66,12 @@ return {
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
       'neovim/nvim-lspconfig',
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'tailwindcss-language-server' },
+        },
+      },
     },
     opts = {},
   },
