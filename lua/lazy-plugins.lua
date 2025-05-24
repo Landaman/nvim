@@ -29,8 +29,9 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     opts = {
       setup_with_executable = {},
+      keymaps = {},
     },
-    opts_extend = { 'setup_with_executable' },
+    opts_extend = { 'setup_with_executable', 'keymaps' },
   },
   {
     'williamboman/mason-lspconfig.nvim',

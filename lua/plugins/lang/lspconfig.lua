@@ -79,7 +79,36 @@ return {
           end
         end
       end
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('LspKeymaps', { clear = true }),
+        desc = 'Restore Configuration on LSP Attach',
+        callback = function(event)
+          local Keys = require 'lazy.core.handler.keys'
+
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if not client then
+            return -- This shouldn't matter
+          end
+
+          for _, keymap in pairs(Keys.resolve(opts.keymaps)) do
+            -- Check if each keymap should be bound
+            if not keymap.has or client:supports_method(keymap.has, event.buf) then
+              -- Set the opts to as it should be for the vim proper
+              local keyOpts = Keys.opts(keymap)
+              keyOpts.cond = nil
+              keyOpts.has = nil
+              keyOpts.silent = keyOpts.silent ~= false
+              keyOpts.buffer = event.buf
+
+              -- Assign the keymap
+              vim.keymap.set(keymap.mode or 'n', keymap.lhs, keymap.rhs, keyOpts)
+            end
+          end
+        end,
+      })
     end,
   },
 }
+
 -- vim: ts=2 sts=2 sw=2 et
