@@ -44,11 +44,6 @@ require('lazy').setup({
     opts_extend = { 'ensure_installed' },
   },
   {
-    'jay-babu/mason-null-ls.nvim',
-    opts = { ensure_installed = {} },
-    opts_extend = { 'ensure_installed' },
-  },
-  {
     'nvim-treesitter/nvim-treesitter',
     ensure_installed = {},
     opts_extend = { 'ensure_installed' },

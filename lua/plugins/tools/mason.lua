@@ -36,15 +36,6 @@ return {
     },
   },
   {
-
-    'jay-babu/mason-null-ls.nvim',
-    cond = not vim.g.vscode,
-    dependencies = {
-      'williamboman/mason.nvim',
-    },
-  },
-  {
-
     'jay-babu/mason-nvim-dap.nvim',
     cond = not vim.g.vscode,
     dependencies = {
