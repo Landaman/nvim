@@ -7,7 +7,7 @@ function replace_builtin_pipe(maybe_builtin_pipe)
   end
 
   -- Get the relevant part of contents
-  local _, _, first_arg = string.find(maybe_builtin_pipe, '%.spawn%_stdio%((%b[])%,')
+  local _, _, first_arg = string.find(maybe_builtin_pipe, "'return (%b[])%,")
 
   local base64_util = require 'fzf-lua.lib.base64'
 
@@ -29,7 +29,7 @@ function replace_builtin_pipe(maybe_builtin_pipe)
   end
 
   -- Re-encode the contents to be what it was except for the call
-  local final_command = string.gsub(maybe_builtin_pipe, '%.spawn%_stdio%(%b[]%,', '%.spawn%_stdio%(%[%=%=%[' .. base64_util.encode(final_spawn) .. '%]%=%=%]%,')
+  local final_command = string.gsub(maybe_builtin_pipe, "'return %b[]%,", "'return %[%=%=%[" .. base64_util.encode(final_spawn) .. '%]%=%=%]%,')
   return final_command
 end
 
