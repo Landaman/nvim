@@ -8,7 +8,6 @@ return {
       },
     },
     opts = {
-      setup_with_executable = { 'clangd' },
       config = {
         clangd = {},
       },
