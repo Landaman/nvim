@@ -49,7 +49,7 @@ return {
         -- Manually trigger refresh on buffer write to update git status
         vim.api.nvim_create_autocmd('BufWritePost', {
           callback = function()
-            opts.refresh_git_status()
+            opts.refresh_filesystem_status()
             if buffer == vim.api.nvim_get_current_buf() then
               -- This will be handled for us internally, since we modified this buffer
               return
@@ -151,7 +151,7 @@ return {
     end
 
     -- build git status cache
-    local function new_git_status()
+    local function new_filesystem_status()
       return setmetatable({}, {
         __index = function(self, key)
           local ignore_proc = vim.system({ 'git', 'ls-files', '--ignored', '--exclude-standard', '--others', '--directory' }, {
@@ -174,12 +174,17 @@ return {
             cwd = key,
             text = true,
           })
+          local fd_unrestricted_proc = vim.system({ 'fd', '-uuu', '--exclude=.git/', '--exclude=.DS_Store' }, { cwd = key, text = true })
+          local fd_proc = vim.system({ 'fd', '--hidden', '--exclude=.git/', '--exclude=.DS_Store' }, { cwd = key, text = true })
+
           local ret = {
             ignored = parse_output(ignore_proc),
             tracked = parse_output(tracked_proc),
             untracked = parse_output(untracked_proc),
             staged = parse_output(staged_proc),
             unstaged = parse_output(unstaged_proc),
+            fd_unrestricted = parse_output(fd_unrestricted_proc),
+            fd = parse_output(fd_proc),
           }
 
           rawset(self, key, ret)
@@ -187,65 +192,17 @@ return {
         end,
       })
     end
-    local git_status = new_git_status()
+    local filesystem_status = new_filesystem_status()
 
     -- Clear git status cache on refresh
     local refresh = require('oil.actions').refresh
     local orig_refresh = refresh.callback
     refresh.callback = function(...)
-      git_status = new_git_status()
+      filesystem_status = new_filesystem_status()
       orig_refresh(...)
     end
 
-    local detail = false
-
-    --- Pre-processes a filter to contain the items in the form we can use to process patterns from
-    ---@param filter {folders: table<string>, files: table<string>} the filter to turn into patterns
-    ---@return table<string> resulting filters
-    local function pre_process_filters(filter)
-      -- Get folders and files
-      local folders = vim.tbl_map(function(path)
-        return path .. '/'
-      end, filter.folders)
-      local files = filter.files
-
-      local joined = vim.list_extend(folders, files) -- Join the lists
-
-      return vim.iter(joined):map(vim.g.os_encode_path_separators):totable() -- Encode the path separators
-    end
-
-    -- Pro-processed filters
-    local hide_filters = pre_process_filters(vim.g.file_visibility.hide)
-    local never_show_filters = pre_process_filters(vim.g.file_visibility.never_show)
-    local always_show_filters = pre_process_filters(vim.g.file_visibility.always_show)
-
-    --- Checks if a filter matches the provided file and name
-    ---@param filter string the filter to check the file and name against
-    ---@param path string the path to check
-    ---@param name string the name of the file
-    ---@return boolean whether the filter matches the specified file/path
-    local function filter_matches_file_and_name(filter, path, name)
-      local full_path = path .. name
-      local stat = vim.uv.fs_stat(full_path)
-
-      if stat.type == 'directory' then -- Should never be nil
-        full_path = full_path .. require('oil.fs').sep -- Ensure we keep files and directories separate
-      end
-
-      return (full_path):match(filter)
-    end
-
-    --- Determines if any of the provided filters match the given file and name
-    ---@param filters table<string> the filters to check
-    ---@param path string the path of the file to check
-    ---@param name string the name of the file to check
-    ---@return boolean if any of the provided filters match the given file
-    local function filters_match_file_and_name(filters, path, name)
-      -- Return true if any filter matches
-      return vim.iter(filters):any(function(filter)
-        return filter_matches_file_and_name(filter, path, name)
-      end)
-    end
+    local detail = false -- This is the variable used to determine the status of the detail column
 
     local git_column = {
       render = function(entry, _, bufnr)
@@ -257,23 +214,23 @@ return {
           return nil
         end
 
-        if git_status[dir].ignored[entry_name] == true then
+        if filesystem_status[dir].ignored[entry_name] == true then
           return { ' ', 'OilHidden' } -- If it's not hidden and git says it is, it's been overridden so display the correct highlight
         end
 
         -- If the entire directory is untracked, this is untracked
-        if git_status[dir].untracked['.'] == true then
+        if filesystem_status[dir].untracked['.'] == true then
           return { ' ', 'OilGitUntracked' }
         end
 
         -- Check untracked
-        if git_status[dir].untracked[entry_name] then
-          if git_status[dir].untracked[entry_name] == true then
+        if filesystem_status[dir].untracked[entry_name] then
+          if filesystem_status[dir].untracked[entry_name] == true then
             return { ' ', 'OilGitUntracked' }
           else
             -- This is when we are the parent of something untracked, in this case we
             -- are modified
-            local type = git_status[dir].untracked[entry_name]
+            local type = filesystem_status[dir].untracked[entry_name]
             assert(type == 'dir')
             return { '󰄱 ', 'OilGitModified' }
           end
@@ -281,17 +238,17 @@ return {
 
         local status = nil
         local staged = false
-        if git_status[dir].unstaged[entry_name] then
+        if filesystem_status[dir].unstaged[entry_name] then
           staged = false
-          status = git_status[dir].unstaged[entry_name].status
-        elseif git_status[dir].staged[entry_name] then
+          status = filesystem_status[dir].unstaged[entry_name].status
+        elseif filesystem_status[dir].staged[entry_name] then
           staged = true
-          status = git_status[dir].staged[entry_name].status
+          status = filesystem_status[dir].staged[entry_name].status
         end
 
         -- Show status for each folder
         if status ~= nil then
-          if status == 'A' or status == 'C' or status == 'T' or (status == 'M' and not git_status[dir].tracked[entry_name]) then -- Add, create, typechange, last accounts for folder
+          if status == 'A' or status == 'C' or status == 'T' or (status == 'M' and not filesystem_status[dir].tracked[entry_name]) then -- Add, create, typechange, last accounts for folder
             return { ' ', 'OilGitAdded' }
           end
 
@@ -318,8 +275,8 @@ return {
     }
 
     return {
-      refresh_git_status = function()
-        git_status = new_git_status()
+      refresh_filesystem_status = function()
+        filesystem_status = new_filesystem_status()
       end,
       git_column = git_column,
       watch_for_changes = true,
@@ -334,28 +291,14 @@ return {
         is_hidden_file = function(name, bufnr)
           local dir = require('oil').get_current_dir(bufnr)
           if not dir then
-            dir = '' -- Handle remote cases, etc
+            return false -- Handle remote, etc. We just have to allow the file to be visible in that case
           end
 
-          -- If this matches the always show filter, then don't hide it
-          if filters_match_file_and_name(always_show_filters, dir, name) then
-            return false
-          end
-
-          -- If the file is in the hide list, hide it
-          if filters_match_file_and_name(hide_filters, dir, name) then
-            return true
-          end
-
-          -- Otherwise, revert to git if present
-          if dir ~= '' then
-            if git_status[dir].ignored['.'] then -- If the directory is ignored, the file definitely is
-              return true
-            end
-
-            return git_status[dir].ignored[name] == true
-          end
-          return false
+          -- We can delegate this entirely to FD. This will handle the three possibilities:
+          -- 1. File is unignored by fd (will exist in the list, so will not hide)
+          -- 2. File is ignored by fd (will not exist in the list, so will hide)
+          -- 3. File is untouched by fd (will be handled by git, which fd does for us)
+          return not filesystem_status[dir].fd[name]
         end,
         is_always_hidden = function(name, bufnr)
           local dir = require('oil').get_current_dir(bufnr)
@@ -365,18 +308,13 @@ return {
             return true
           end
 
-          -- -- If this matches the always show filter, then don't hide it
-          if filters_match_file_and_name(always_show_filters, dir, name) then
+          -- If we don't have a dir, just assume the file isn't hidden. Nothing to be done in that case
+          if not dir then
             return false
           end
 
-          -- If the file is in the hide list, hide it
-          if filters_match_file_and_name(never_show_filters, dir, name) then
-            return true
-          end
-
-          -- Otherwise, not always hidden
-          return false
+          -- The only reason the file wouldn't be in the fd -uuu list is if it's been set to always-ignore by the FD config. In that case, we should definitely hide it
+          return not filesystem_status[dir].fd_unrestricted[name]
         end,
         highlight_filename = function(entry, is_hidden, _, _, bufnr)
           local dir = require('oil').get_current_dir(bufnr)
@@ -386,38 +324,38 @@ return {
             return nil
           end
 
-          if is_hidden or git_status[dir].ignored[entry.name] == true then
+          if is_hidden or filesystem_status[dir].ignored[entry.name] == true then
             return 'OilHidden' -- If it's not hidden and git says it is, it's been overridden so display the correct highlight
           end
 
           -- If the entire directory is untracked, this is untracked
-          if git_status[dir].untracked['.'] == true then
+          if filesystem_status[dir].untracked['.'] == true then
             return 'OilGitUntracked'
           end
 
           -- Check untracked
-          if git_status[dir].untracked[entry.name] then
-            if git_status[dir].untracked[entry.name] == true then
+          if filesystem_status[dir].untracked[entry.name] then
+            if filesystem_status[dir].untracked[entry.name] == true then
               return 'OilGitUntracked'
             else
               -- This is when we are the parent of something untracked, in this case we
               -- are modified
-              local type = git_status[dir].untracked[entry.name]
+              local type = filesystem_status[dir].untracked[entry.name]
               assert(type == 'dir')
               return 'OilGitModified'
             end
           end
 
           local status = nil
-          if git_status[dir].unstaged[entry.name] then
-            status = git_status[dir].unstaged[entry.name].status
-          elseif git_status[dir].staged[entry.name] then
-            status = git_status[dir].staged[entry.name].status
+          if filesystem_status[dir].unstaged[entry.name] then
+            status = filesystem_status[dir].unstaged[entry.name].status
+          elseif filesystem_status[dir].staged[entry.name] then
+            status = filesystem_status[dir].staged[entry.name].status
           end
 
           -- Show status for each folder
           if status ~= nil then
-            if status == 'A' or status == 'C' or status == 'T' or (status == 'M' and not git_status[dir].tracked[entry.name]) then -- Add, create, typechange, last accounts for folder
+            if status == 'A' or status == 'C' or status == 'T' or (status == 'M' and not filesystem_status[dir].tracked[entry.name]) then -- Add, create, typechange, last accounts for folder
               return 'OilGitAdded'
             end
 

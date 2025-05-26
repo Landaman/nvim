@@ -90,46 +90,6 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.g.file_visibility = {
-  always_show = {
-    files = { '%.env.*' },
-    folders = { '%.vscode' },
-  },
-  hide = {
-    files = {
-      'metals%.sbt',
-    },
-    folders = {
-      'node%_modules',
-      '%.venv',
-      '%_%_pycache%_%_',
-      '%.metals',
-      '%.bloop',
-      '%.ammonite',
-      '%.turbo',
-      '%.firebase',
-      '%.next',
-      '%.svelte%-kit',
-      '%.husky%/%_',
-    },
-  },
-  never_show = { files = { '%.DS%_Store' }, folders = { '%.git' } },
-}
-
---- Encodes a folder pattern to have the correct path separators based on the OS
----@param pattern string pattern to encode separators for
----@return string the encoded pattern
-vim.g.os_encode_path_separators = function(pattern)
-  local result
-  if vim.fn.has 'win32' == 1 then
-    result, _ = pattern:gsub('/', '\\')
-  else
-    result, _ = pattern:gsub('\\', '/')
-  end
-
-  return result
-end
-
 -- Helper function to set opfuncs
 local op_func_id = 0
 vim.g.to_op = function(func)
