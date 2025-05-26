@@ -17,6 +17,20 @@ return {
     },
   },
   {
+    'stevearc/conform.nvim',
+    dependencies = {
+      'williamboman/mason.nvim',
+      opts = {
+        ensure_installed = { 'pgformatter' },
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        sql = { 'pg_format' },
+      },
+    },
+  },
+  {
     'nvim-treesitter/nvim-treesitter',
     opts = {
       ensure_installed = {
