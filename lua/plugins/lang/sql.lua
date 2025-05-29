@@ -21,12 +21,17 @@ return {
     dependencies = {
       'williamboman/mason.nvim',
       opts = {
-        ensure_installed = { 'pgformatter' },
+        ensure_installed = { 'sql-formatter' },
       },
     },
     opts = {
       formatters_by_ft = {
-        sql = { 'pg_format' },
+        sql = { 'sql_formatter' },
+      },
+      formatters = {
+        sql_formatter = {
+          append_args = { '--language=postgresql' },
+        },
       },
     },
   },
