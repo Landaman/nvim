@@ -102,6 +102,7 @@ return {
     {
       'gra',
       function()
+        require('fzf-lua').register_ui_select() -- Required to suppress a warning
         require('fzf-lua').lsp_code_actions()
       end,
       desc = 'Code actions',
