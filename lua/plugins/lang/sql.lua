@@ -33,7 +33,7 @@ return {
           append_args = { '--language=postgresql' },
         },
         pg_format = {
-          append_args = { '--spaces=2' },
+          append_args = { '--spaces=2', '--keep-newline' },
         },
       },
     },
