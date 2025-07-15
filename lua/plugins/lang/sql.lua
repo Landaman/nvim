@@ -32,6 +32,9 @@ return {
         sql_formatter = {
           append_args = { '--language=postgresql' },
         },
+        pg_format = {
+          append_args = { '--spaces=2' },
+        },
       },
     },
   },
