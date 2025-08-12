@@ -1,5 +1,5 @@
 -- Lsp keymaps
-vim.keymap.set('n', 'gry', vim.lsp.buf.type_definition, {
+vim.keymap.set('n', 'grt', vim.lsp.buf.type_definition, {
   desc = 'vim.lsp.buf.type_definition()',
 })
 
