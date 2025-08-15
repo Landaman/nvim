@@ -66,7 +66,9 @@ vim.opt.softtabstop = 4
 -- Disable text wrapping
 vim.opt.wrap = false
 
-vim.opt.spell = true
-vim.opt.spelllang = 'en_us'
+if not vim.g.vscode then
+  vim.opt.spell = true
+  vim.opt.spelllang = 'en_us'
+end
 
 -- vim: ts=2 sts=2 sw=2 et
