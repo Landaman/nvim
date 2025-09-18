@@ -1,6 +1,7 @@
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     dependencies = {
       {
@@ -16,7 +17,8 @@ return {
       },
       {
         'nvim-treesitter/nvim-treesitter-textobjects',
-        main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+        branch = 'main',
+        main = 'nvim-treesitter.config', -- Sets main module to use for opts
         opts = {
           textobjects = {
             select = {
@@ -110,7 +112,7 @@ return {
       },
     },
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    main = 'nvim-treesitter.config', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = { 'bash', 'diff', 'markdown', 'markdown_inline', 'query', 'regex', 'vim', 'vimdoc', 'gitcommit', 'gitignore', 'csv' },
