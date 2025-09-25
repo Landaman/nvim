@@ -3,7 +3,7 @@ return {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     cond = not vim.g.vscode,
-    event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
+    event = vim.list_extend({ 'BufReadPre' }, vim.g.lazy_file),
     opts = {
       config = {}, -- Config for the system
     },

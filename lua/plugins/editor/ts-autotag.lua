@@ -1,6 +1,6 @@
 return {
   'windwp/nvim-ts-autotag',
   cond = not vim.g.vscode,
-  event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
+  event = vim.g.lazy_file,
   opts = {},
 }

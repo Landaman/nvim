@@ -4,7 +4,7 @@ return {
     'folke/todo-comments.nvim',
     cond = not vim.g.vscode,
     cmd = { 'TodoTrouble', 'TodoFzfLua' },
-    event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
+    event = vim.g.lazy_file,
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
     keys = {

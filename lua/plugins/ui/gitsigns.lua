@@ -18,7 +18,7 @@ return {
     'lewis6991/gitsigns.nvim',
     cond = not vim.g.vscode,
     cmd = 'Gitsigns',
-    event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
+    event = vim.g.lazy_file,
     opts = {
       on_attach = function(bufnr)
         local gitsigns = require 'gitsigns'

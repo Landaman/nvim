@@ -2,7 +2,7 @@ return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     branch = 'main',
-    event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
+    event = vim.g.lazy_file,
     dependencies = {
       {
         'nvim-treesitter/nvim-treesitter-context',

@@ -147,6 +147,9 @@ vim.g.to_op = function(func)
   return _G[op_func_name]
 end
 
+-- Events that should happen after a file is loaded
+vim.g.lazy_file = { 'BufReadPost', 'BufNewFile', 'BufWritePre' }
+
 vim.loader.enable() -- Enable the faster plugin loader
 
 -- [[ Setting options ]]
