@@ -59,7 +59,7 @@ return {
         map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'Git reset hunk' })
         map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'Git stage buffer' })
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'Git reset buffer' })
-        map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'Git preview hunk' })
+        map('n', '<leader>hp', gitsigns.preview_hunk_inline, { desc = 'Git preview hunk' })
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'Git blame line' })
         map('n', '<leader>hd', gitsigns.diffthis, { desc = 'Git diff against index' })
         map('n', '<leader>hD', function()
