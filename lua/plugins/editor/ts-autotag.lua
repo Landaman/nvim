@@ -3,4 +3,7 @@ return {
   cond = not vim.g.vscode,
   event = vim.g.lazy_file,
   opts = {},
+  dependencies = {
+    'nvim-treesitter/nvim-treesitter',
+  },
 }

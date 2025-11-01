@@ -239,11 +239,22 @@ return {
     build = ':TSUpdate',
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
+      highlight = {
+        enable = true,
+      },
       ensure_installed = { 'bash', 'diff', 'markdown', 'markdown_inline', 'query', 'regex', 'vim', 'vimdoc', 'gitcommit', 'gitignore', 'csv' },
     },
     config = function(_, opts)
       require('nvim-treesitter.config').setup(opts)
       require('nvim-treesitter.install').install(opts.ensure_installed)
+
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('lazyvim_treesitter', { clear = true }),
+        callback = function(event)
+          -- For some reason, this doesn't always happen automatically, so ensure it does
+          pcall(vim.treesitter.start, event.buf)
+        end,
+      })
     end,
   },
 }
