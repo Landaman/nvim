@@ -4,12 +4,13 @@ return {
     dependencies = {
       'williamboman/mason.nvim',
       opts = {
-        ensure_installed = { 'css-lsp' },
+        ensure_installed = { 'css-lsp', 'tailwindcss-language-server' },
       },
     },
     opts = {
       config = {
         cssls = {},
+        tailwindCSS = {},
       },
     },
   },
@@ -40,39 +41,5 @@ return {
         less = { 'prettierd' },
       },
     },
-  },
-  {
-    'luckasRanarison/tailwind-tools.nvim',
-    cond = not vim.g.vscode,
-    ft = {
-      'html',
-      'css',
-      'php',
-      'twig',
-      'vue',
-      'heex',
-      'astro',
-      'templ',
-      'svelte',
-      'elixir',
-      'htmldjango',
-      'javascript',
-      'typescript',
-      'javascriptreact',
-      'typescriptreact',
-      'rust',
-    },
-    build = ':UpdateRemotePlugins',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'neovim/nvim-lspconfig',
-      {
-        'williamboman/mason.nvim',
-        opts = {
-          ensure_installed = { 'tailwindcss-language-server' },
-        },
-      },
-    },
-    opts = {},
   },
 }
