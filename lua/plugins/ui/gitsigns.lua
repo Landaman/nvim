@@ -65,9 +65,6 @@ return {
         map('n', '<leader>hD', function()
           gitsigns.diffthis '@'
         end, { desc = 'Git diff against last commit' })
-        -- Toggles
-        map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = 'Toggle git show blame line' })
-        map('n', '<leader>tp', gitsigns.preview_hunk_inline, { desc = 'Toggle git inline hunk preview' })
       end,
     },
   },

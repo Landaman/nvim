@@ -31,7 +31,6 @@ return {
         { '<leader>d', group = 'Document' },
         { '<leader>s', group = 'Search' },
         { '<leader>w', group = 'Workspace' },
-        { '<leader>t', group = 'Toggle' },
         { '<leader>h', group = 'Git hunk', mode = { 'n', 'v' } },
       },
     },
