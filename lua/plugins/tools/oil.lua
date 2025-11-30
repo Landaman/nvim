@@ -270,7 +270,7 @@ return {
         return nil
       end,
       parse = function(line)
-        return line:match '^(.*)%s+(.*)$'
+        return line:match '^([^%s]*)%s+(.*)$'
       end,
     }
 
