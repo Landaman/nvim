@@ -174,7 +174,7 @@ return {
             function()
               require('nvim-treesitter-textobjects.select').select_textobject('@function.outer', 'textobjects')
             end,
-            mode = { 'n', 'x', 'o' },
+            mode = { 'x', 'o' },
             desc = 'Around function',
           },
           {
@@ -182,7 +182,7 @@ return {
             function()
               require('nvim-treesitter-textobjects.select').select_textobject('@function.inner', 'textobjects')
             end,
-            mode = { 'n', 'x', 'o' },
+            mode = { 'x', 'o' },
             desc = 'Inside function',
           },
           {
@@ -190,7 +190,7 @@ return {
             function()
               require('nvim-treesitter-textobjects.select').select_textobject('@class.outer', 'textobjects')
             end,
-            mode = { 'n', 'x', 'o' },
+            mode = { 'x', 'o' },
             desc = 'Around class',
           },
           {
@@ -198,7 +198,7 @@ return {
             function()
               require('nvim-treesitter-textobjects.select').select_textobject('@class.inner', 'textobjects')
             end,
-            mode = { 'n', 'x', 'o' },
+            mode = { 'x', 'o' },
             desc = 'Inside class',
           },
           {
@@ -206,7 +206,7 @@ return {
             function()
               require('nvim-treesitter-textobjects.select').select_textobject('@parameter.outer', 'textobjects')
             end,
-            mode = { 'n', 'x', 'o' },
+            mode = { 'x', 'o' },
             desc = 'Around parameter',
           },
           {
@@ -214,7 +214,7 @@ return {
             function()
               require('nvim-treesitter-textobjects.select').select_textobject('@parameter.inner', 'textobjects')
             end,
-            mode = { 'n', 'x', 'o' },
+            mode = { 'x', 'o' },
             desc = 'Inside parameter',
           },
           {
