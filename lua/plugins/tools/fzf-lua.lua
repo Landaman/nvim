@@ -1,3 +1,11 @@
+local ui_select_registered = false
+local function register_ui_select_if_required()
+  if not ui_select_registered then
+    require('fzf-lua').register_ui_select()
+    ui_select_registered = true
+  end
+end
+
 return {
   'ibhagwan/fzf-lua',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -102,7 +110,7 @@ return {
     {
       'gra',
       function()
-        require('fzf-lua').register_ui_select() -- Required to suppress a warning
+        register_ui_select_if_required()
         require('fzf-lua').lsp_code_actions()
       end,
       desc = 'Code actions',
@@ -146,7 +154,7 @@ return {
   },
   init = function()
     vim.ui.select = function(...)
-      require('fzf-lua').register_ui_select()
+      register_ui_select_if_required()
       vim.ui.select(...)
     end
   end,
