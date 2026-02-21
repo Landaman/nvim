@@ -9,7 +9,7 @@ if vim.g.vscode then
     require('vscode').call 'workbench.action.editor.nextChange'
   end, { desc = 'Next change' })
   vim.keymap.set('n', '[g', function()
-    require('vscode').call 'workbench.action.editor.prevChange'
+    require('vscode').call 'workbench.action.editor.previousChange'
   end, { desc = 'Previous change' })
 end
 
