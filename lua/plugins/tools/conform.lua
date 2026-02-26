@@ -18,6 +18,7 @@ return {
   },
   cond = not vim.g.vscode,
   event = { 'BufWritePre' },
+  cmd = { 'ConformInfo' },
   opts = {
     format_on_save = {},
     default_format_opts = {
