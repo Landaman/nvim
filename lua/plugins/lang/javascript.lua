@@ -51,21 +51,12 @@ return {
   },
   {
     'stevearc/conform.nvim',
-    dependencies = {
-      {
-
-        'williamboman/mason.nvim',
-        opts = {
-          ensure_installed = { 'prettierd' },
-        },
-      },
-    },
     opts = {
       formatters_by_ft = {
-        javascript = { 'prettierd' },
-        javascriptreact = { 'prettierd' },
-        typescript = { 'prettierd' },
-        typescriptreact = { 'prettierd' },
+        javascript = { 'web' },
+        javascriptreact = { 'web' },
+        typescript = { 'web' },
+        typescriptreact = { 'web' },
       },
     },
   },
