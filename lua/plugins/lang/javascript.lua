@@ -10,7 +10,7 @@ return {
       {
         'williamboman/mason.nvim',
         opts = {
-          ensure_installed = { 'eslint-lsp', 'vtsls' },
+          ensure_installed = { 'eslint-lsp', 'vtsls', 'oxlint' },
         },
       },
     },
@@ -46,6 +46,7 @@ return {
             },
           },
         },
+        oxlint = {},
       },
     },
   },
