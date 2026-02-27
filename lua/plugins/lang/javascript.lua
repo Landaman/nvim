@@ -1,7 +1,7 @@
 -- Support yarn pnp by using these if they exist
-local yarnDirectory = vim.fs.find('.yarn', { upward = true, type = 'directory' })[1]
-local tsdkFolder = yarnDirectory .. '/.yarn/sdks/typescript/lib'
-local eslintFolder = yarnDirectory .. '/.yarn/sdks'
+local yarnDirectory = vim.fs.find('.yarn/sdks', { upward = true, type = 'directory' })[1]
+local tsdkFolder = yarnDirectory .. '/typescript/lib'
+local eslintFolder = yarnDirectory
 
 return {
   {
