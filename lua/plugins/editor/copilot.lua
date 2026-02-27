@@ -1,6 +1,7 @@
 return {
   'zbirenbaum/copilot.lua',
   cmd = 'Copilot',
+  cond = not vim.g.vscode,
   build = ':Copilot auth',
   event = 'BufReadPost',
   opts = {
