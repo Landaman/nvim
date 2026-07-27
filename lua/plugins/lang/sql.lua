@@ -29,9 +29,7 @@ return {
         sql = { 'pg_format', 'sql_formatter', stop_after_first = false },
       },
       formatters = {
-        sql_formatter = {
-          append_args = { '--language=postgresql' },
-        },
+        sql_formatter = {},
         pg_format = {
           append_args = { '--spaces=2', '--keep-newline', '--wrap-limit=80' },
         },
